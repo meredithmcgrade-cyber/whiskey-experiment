@@ -1,14 +1,20 @@
 // Sound is off until the visitor turns it on. Both sounds are recordings in
 // public/sounds, fetched the first time sound is switched on:
 //
-//   cork-pop.mp3   plays as the cork leaves the bottle
-//   pour-plop.mp3  plays as the pour first lands in the glass
+//   cork-pop.mp3  plays as the cork leaves the bottle
+//   pour.mp3      plays while the whiskey is pouring
 //
 // Replace either file to change the sound.
 
+// The pour lasts as long as the visitor takes to scroll through it, which can
+// be longer than the recording. So the recording starts from its beginning,
+// and if it reaches this stretch of steady pouring it repeats that stretch
+// until the pour stops. Times are in seconds from the start of the file.
+const POUR_LOOP = { start: 0.55, end: 1.95 }
+
 const FILES = {
   pop: '/sounds/cork-pop.mp3',
-  plop: '/sounds/pour-plop.mp3',
+  pour: '/sounds/pour.mp3',
 }
 
 class Sound {
@@ -16,10 +22,12 @@ class Sound {
     this.enabled = false
     this.context = null
     this.buffers = {}
+    this.pouring = null
   }
 
   toggle() {
     if (this.enabled) {
+      this.stopPour()
       this.enabled = false
       this.master.gain.setTargetAtTime(0, this.context.currentTime, 0.05)
       return false
@@ -61,8 +69,28 @@ class Sound {
     this.play('pop')
   }
 
-  plop() {
-    this.play('plop', 0.8)
+  startPour() {
+    if (!this.enabled || !this.buffers.pour || this.pouring) return
+    const source = this.context.createBufferSource()
+    source.buffer = this.buffers.pour
+    source.loop = true
+    source.loopStart = POUR_LOOP.start
+    source.loopEnd = POUR_LOOP.end
+    const gain = this.context.createGain()
+    gain.gain.value = 0.8
+    source.connect(gain).connect(this.master)
+    source.start()
+    this.pouring = { source, gain }
+  }
+
+  // Fades out quickly instead of cutting off, so it ends like a pour does.
+  stopPour() {
+    if (!this.pouring) return
+    const { source, gain } = this.pouring
+    const now = this.context.currentTime
+    gain.gain.setTargetAtTime(0, now, 0.09)
+    source.stop(now + 0.5)
+    this.pouring = null
   }
 }
 
