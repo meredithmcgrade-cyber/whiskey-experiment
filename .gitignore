@@ -3,3 +3,6 @@ dist
 .DS_Store
 .vercel
 *.local
+
+# Preview screenshots saved by Claude
+Claude outputs/
