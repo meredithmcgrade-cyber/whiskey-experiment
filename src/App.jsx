@@ -1,0 +1,166 @@
+import { useEffect, useState } from 'react'
+import Lenis from 'lenis'
+import 'lenis/dist/lenis.css'
+import Scene from './scene/Scene.jsx'
+import { days, finale, footer, hero, question } from './content.js'
+
+// JS counts days from Sunday. The site counts from Monday.
+const todayId = days[(new Date().getDay() + 6) % 7].id
+
+function useSmoothScroll() {
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const lenis = new Lenis({ autoRaf: true, anchors: true, lerp: 0.09 })
+    return () => lenis.destroy()
+  }, [])
+}
+
+// Adds the "in" class to anything with data-reveal once it scrolls into view,
+// and reports which section is currently in the middle of the screen.
+function useSections() {
+  const [active, setActive] = useState('home')
+  useEffect(() => {
+    const reveal = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.target.classList.toggle('in', e.isIntersecting)),
+      { threshold: 0.35 }
+    )
+    document.querySelectorAll('[data-reveal]').forEach((el) => reveal.observe(el))
+
+    const spy = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      { rootMargin: '-50% 0px -50% 0px' }
+    )
+    document.querySelectorAll('[data-section]').forEach((el) => spy.observe(el))
+    return () => {
+      reveal.disconnect()
+      spy.disconnect()
+    }
+  }, [])
+  return active
+}
+
+function Nav({ active }) {
+  return (
+    <nav className="nav" aria-label="Days of the week">
+      <a href="#home" className={active === 'home' ? 'is-active' : ''}>
+        Home
+      </a>
+      {days.map((d) => (
+        <a
+          key={d.id}
+          href={`#${d.id}`}
+          className={[active === d.id ? 'is-active' : '', d.id === todayId ? 'is-today' : ''].join(' ')}
+          aria-current={active === d.id ? 'true' : undefined}
+        >
+          <span className="nav__long">{d.name}</span>
+          <span className="nav__short" aria-hidden="true">
+            {d.short}
+          </span>
+        </a>
+      ))}
+    </nav>
+  )
+}
+
+function Checker({ active }) {
+  const day = days.find((d) => d.id === active)
+  const pending = active === 'home'
+  const label = day ? day.name : pending ? 'Stand by' : 'Every day'
+  return (
+    <p className="checker" aria-hidden="true">
+      <span className="checker__key">Checking</span>
+      <span className="checker__value" key={label}>
+        {label}
+      </span>
+      <span className="checker__arrow">&rarr;</span>
+      <span className={`checker__value checker__value--result ${pending ? 'is-pending' : ''}`} key={String(pending)}>
+        {pending ? 'Pending' : "It's Wednesday"}
+      </span>
+    </p>
+  )
+}
+
+export default function App() {
+  useSmoothScroll()
+  const active = useSections()
+
+  return (
+    <>
+      <div className="stage" aria-hidden="true">
+        <Scene />
+      </div>
+
+      <header className="topbar">
+        <Nav active={active} />
+        <Checker active={active} />
+      </header>
+
+      <main>
+        <section id="home" className="screen hero" data-section>
+          <h1 className="hero__title">{hero.title}</h1>
+          <a className="hero__hint" href={`#${days[0].id}`}>
+            <span>{hero.hint}</span>
+            <i aria-hidden="true" />
+          </a>
+        </section>
+
+        {days.map((d, i) => (
+          <section
+            key={d.id}
+            id={d.id}
+            className={`screen day ${i % 2 === 0 ? 'day--left' : 'day--right'}`}
+            data-section
+          >
+            <div className="day__copy" data-reveal>
+              <p className="eyebrow">
+                <span className="eyebrow__num">{String(i + 1).padStart(2, '0')}</span>
+                {d.name}
+                {d.id === todayId && <span className="eyebrow__today">Today</span>}
+              </p>
+              <p className="day__question">{question}</p>
+              <p className="day__answer">{d.answer}</p>
+            </div>
+          </section>
+        ))}
+
+        <section id="still" className="finale" data-section>
+          <div className="screen finale__block" data-reveal>
+            <h2 className="finale__question">
+              <span>{finale.lead}</span> {finale.question}
+            </h2>
+          </div>
+          <div className="screen finale__block" data-reveal>
+            <p className="finale__answer">{finale.answer}</p>
+          </div>
+          <div className="screen finale__block" data-reveal>
+            <p className="finale__body">{finale.body}</p>
+          </div>
+        </section>
+      </main>
+
+      <footer className="footer">
+        <p className="footer__title">{footer.title}</p>
+        <div className="footer__cols">
+          <div>
+            <p className="eyebrow">{footer.contactLabel}</p>
+            <a className="link" href={footer.phone.href}>
+              {footer.phone.label}
+            </a>
+            <a className="link" href={footer.email.href}>
+              {footer.email.label}
+            </a>
+          </div>
+          <div>
+            <p className="eyebrow">{footer.linksLabel}</p>
+            {footer.links.map((l) => (
+              <a key={l.href} className="link link--out" href={l.href} target="_blank" rel="noreferrer">
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+        <p className="footer__credit">{footer.credit}</p>
+      </footer>
+    </>
+  )
+}
