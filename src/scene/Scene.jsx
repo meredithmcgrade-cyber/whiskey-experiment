@@ -1,17 +1,17 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, Lightformer, PerformanceMonitor, Text, useGLTF, useTexture } from '@react-three/drei'
+import { Environment, Lightformer, PerformanceMonitor, useGLTF, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, Noise, ToneMapping, Vignette } from '@react-three/postprocessing'
 import { BlendFunction, ToneMappingMode } from 'postprocessing'
 import * as THREE from 'three'
 import { rigs, SEQUENCE_LENGTH } from '../theatre/index.js'
 import { detectQuality, SETTINGS, stepDown } from '../quality.js'
 import { sound } from '../audio.js'
-import { hero } from '../content.js'
 import {
   makeBackdropMaterial,
   makeCorkMaterial,
   makeGlassMaterial,
+  makeLabelMaterial,
   makeLiquidMaterial,
   makeRefractiveGlassMaterial,
   makeRippleMaterial,
@@ -20,7 +20,6 @@ import {
 
 const MODEL_URL = '/models/whiskey.glb'
 const CORK_TEXTURES = ['/textures/cork-color.jpg', '/textures/cork-normal.jpg']
-const HEADLINE_FONT = '/fonts/ConsortRR-LightCondensed.woff'
 
 // Measurements taken from the Blender bottle, relative to its base.
 const BOTTLE_PIVOT = 1.5 // the height it leans around
@@ -34,7 +33,6 @@ const BOTTLE_INTERIOR = [
   [0.153, 2.32], [0.141, 2.42], [0.137, 2.9], [0, 2.9],
 ]
 const GLASS_INNER_RADIUS = 0.44
-const HEADLINE_DEPTH = -3 // how far behind the bottle the headline sits
 const PORTRAIT_BELOW = 0.8 // narrower than this and the phone timeline takes over
 
 const { clamp, lerp, smoothstep, degToRad } = THREE.MathUtils
@@ -61,6 +59,7 @@ function useModel(settings) {
     const find = (name) => root.getObjectByName(name) || root.getObjectByName(name.replace(/ /g, '_'))
     const bottle = find('Bottle')
     const cork = find('Cork')
+    const label = find('Label') // the raised "Is it Wednesday?" lettering, a child of the bottle
     const glass = find('Glass')
     const glassLiquid = find('Glass Liquid')
     const ice = find('Ice')
@@ -88,6 +87,7 @@ function useModel(settings) {
     bottle.remove(cork)
 
     paint(bottle, glassMaterial, 3)
+    if (label) paint(label, makeLabelMaterial())
     paint(glass, glassMaterial, 3)
     paint(ice, iceMaterial, 4)
     paint(cork, corkMaterial)
@@ -480,53 +480,6 @@ function Whiskey({ settings }) {
   )
 }
 
-// The headline is real 3D type sitting behind the bottle, so the glass passes
-// in front of the letters and bends them. It scrolls away with the page. The
-// HTML headline stays in the page for screen readers and is only hidden once
-// this one has drawn.
-function Headline() {
-  const text = useRef()
-  const width = useRef(0)
-  const camera = useThree((state) => state.camera)
-  const aspect = useThree((state) => state.viewport.aspect)
-  const intro = useRef(0)
-
-  useFrame((_, delta) => {
-    if (!width.current) return
-    const distance = camera.position.z - HEADLINE_DEPTH
-    const viewHeight = 2 * Math.tan(degToRad(camera.fov / 2)) * distance
-    const scroll = window.scrollY / window.innerHeight
-    const target = viewHeight * aspect * (aspect < PORTRAIT_BELOW ? 0.86 : 0.6)
-    intro.current = Math.min(1, intro.current + delta / 1.4)
-    text.current.scale.setScalar(target / width.current)
-    text.current.position.y = scroll * viewHeight + camera.position.y
-    text.current.visible = scroll < 1.4
-    text.current.fillOpacity = easeOut(intro.current)
-  })
-
-  return (
-    <Text
-      ref={text}
-      font={HEADLINE_FONT}
-      characters={hero.title}
-      fontSize={1}
-      letterSpacing={-0.02}
-      anchorX="center"
-      anchorY="middle"
-      position={[0, 0, HEADLINE_DEPTH]}
-      visible={false}
-      onSync={(mesh) => {
-        const box = mesh.geometry.boundingBox
-        width.current = box ? box.max.x - box.min.x : 0
-        if (width.current) document.documentElement.classList.add('has-3d-headline')
-      }}
-    >
-      {hero.title}
-      <meshBasicMaterial color="#dbd8d7" toneMapped={false} />
-    </Text>
-  )
-}
-
 function Backdrop() {
   const material = useMemo(() => makeBackdropMaterial(), [])
   const size = useThree((state) => state.size)
@@ -596,9 +549,6 @@ export default function Scene() {
       <PerformanceMonitor onDecline={() => setQuality(stepDown)} flipflops={2} />
       <Backdrop />
       <Lighting />
-      <Suspense fallback={null}>
-        <Headline />
-      </Suspense>
       <Suspense fallback={null}>
         <Whiskey settings={settings} />
       </Suspense>

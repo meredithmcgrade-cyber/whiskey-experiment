@@ -249,3 +249,20 @@ export function makeBackdropMaterial() {
       }`,
   })
 }
+
+// The raised lettering on the bottle. Matte and pale, with a faint glow of its
+// own so it stays readable when the bottle turns away from the lights.
+export function makeLabelMaterial() {
+  return new THREE.MeshStandardMaterial({
+    color: '#dbd8d7',
+    roughness: 0.5,
+    metalness: 0,
+    emissive: '#dbd8d7',
+    emissiveIntensity: 0.12,
+    side: THREE.DoubleSide,
+    // Fully opaque, but flagged this way so it is drawn after the glass. If it
+    // were drawn before, the glass would refract a second, smeared copy of
+    // the letters around their edges.
+    transparent: true,
+  })
+}

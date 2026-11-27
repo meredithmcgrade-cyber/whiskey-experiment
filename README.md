@@ -60,12 +60,12 @@ What each control does:
 
 ## Updating the models
 
-The models come from `whiskey.1_web.blend`. To update them, select Bottle, Cork, Glass, Glass Liquid and Ice in Blender, export as glTF Binary with "Selected Objects" and "Apply Modifiers" on, and save over `public/models/whiskey.glb`. Keep the object names the same, because the scene finds each piece by name.
+The models come from `whiskey.1_web.blend`. To update them, select Bottle, Cork, Label, Glass, Glass Liquid and Ice in Blender, export as glTF Binary with "Selected Objects" and "Apply Modifiers" on, and save over `public/models/whiskey.glb`. Keep the object names the same, because the scene finds each piece by name.
 
 A few things are done in code instead of Blender:
 
 - **The whiskey in the bottle** is a shape generated from the bottle's inside measurements (`BOTTLE_INTERIOR` in `Scene.jsx`) so it can run into the neck when the bottle tips. If the bottle's shape changes, those numbers need to change too.
-- **The headline** is real 3D type behind the bottle, set in `public/fonts/ConsortRR-LightCondensed.woff`, so the glass bends it. The HTML headline stays in the page for screen readers.
+- **The headline** is the raised lettering on the bottle, an object named `Label` parented to the bottle in Blender. It was built from the "Is It Wednesday_.svg" curves: extruded slightly and wrapped 130 degrees around the body. The HTML headline stays in the page for screen readers, hidden from view.
 - **Lighting** recreates the Blender file's four area lights and green ambient (see `Lighting` in `Scene.jsx`). If the lights move in Blender, they need to be moved here too.
 - **The pour, splash and cork pop** are generated in code, with no baked simulations. The pouring sound is synthesized too. The cork sound is a recording at `public/sounds/cork-pop.mp3`. Replace that file to change it.
 - **Materials** are all set in `materials.js`. Blender materials are ignored, except the cork. Its procedural Blender material is baked to two images in `public/textures/` (color and surface bumps). If the cork's look or shape changes in Blender, it needs to be baked again.
