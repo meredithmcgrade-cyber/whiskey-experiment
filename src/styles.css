@@ -190,38 +190,38 @@ main {
   display: none;
 }
 
-/* ---------- Checker readout and sound toggle ---------- */
+/* ---------- Sound toggle ---------- */
 
-.topbar__row {
-  display: flex;
-  align-items: stretch;
-  gap: 0.4rem;
-}
-
+/* Sits alone in the top right corner, level with the nav. Four small bars:
+   flat when sound is off, moving when it is on. */
 .sound {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.8rem;
-  border: 0;
+  position: fixed;
+  z-index: 10;
+  top: clamp(0.75rem, 2vh, 1.5rem);
+  right: clamp(0.75rem, 2vw, 1.5rem);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(10, 7, 5, 0.55);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   color: var(--muted);
-  font: inherit;
-  font-size: 0.62rem;
-  letter-spacing: inherit;
-  text-transform: inherit;
   cursor: pointer;
   transition:
     color 0.3s var(--ease),
-    background-color 0.3s var(--ease);
+    background-color 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    opacity 1.2s var(--ease) 0.5s;
 }
 
 .sound:hover {
   color: var(--ink);
   background: rgba(219, 216, 215, 0.1);
+  border-color: rgba(219, 216, 215, 0.35);
 }
 
 .sound[aria-pressed='true'] {
@@ -230,16 +230,21 @@ main {
 
 .sound__bars {
   display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 0.7em;
+  align-items: center;
+  gap: 3px;
+  height: 0.9rem;
 }
 
 .sound__bars i {
   width: 2px;
-  height: 30%;
+  height: 18%;
   background: currentColor;
+  border-radius: 1px;
   transition: height 0.3s var(--ease);
+}
+
+.sound:hover .sound__bars i {
+  height: 40%;
 }
 
 .sound[aria-pressed='true'] .sound__bars i {
@@ -247,11 +252,15 @@ main {
 }
 
 .sound[aria-pressed='true'] .sound__bars i:nth-child(2) {
-  animation-delay: -0.3s;
+  animation-delay: -0.35s;
 }
 
 .sound[aria-pressed='true'] .sound__bars i:nth-child(3) {
   animation-delay: -0.6s;
+}
+
+.sound[aria-pressed='true'] .sound__bars i:nth-child(4) {
+  animation-delay: -0.15s;
 }
 
 @keyframes bars {
@@ -262,6 +271,8 @@ main {
     height: 100%;
   }
 }
+
+/* ---------- Checker readout ---------- */
 
 .checker {
   display: flex;
@@ -309,6 +320,14 @@ main {
 
 .is-loaded .topbar,
 .is-loaded .hero__hint {
+  opacity: 1;
+}
+
+.sound {
+  opacity: 0;
+}
+
+.is-loaded .sound {
   opacity: 1;
 }
 
@@ -603,8 +622,16 @@ main {
     display: none;
   }
 
+  /* The nav fills the top of a phone screen, so the toggle drops below it. */
   .sound {
-    padding: 0.35rem 0.6rem;
+    top: calc(clamp(0.75rem, 2vh, 1.5rem) + 2.75rem);
+    right: 0.75rem;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .checker__key {
+    display: none;
   }
 
   .nav__short {

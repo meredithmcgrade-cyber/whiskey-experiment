@@ -110,14 +110,15 @@ function Words({ text, as: Tag = 'p', className = '', step = 28, lead }) {
 
 function SoundToggle() {
   const [on, setOn] = useState(false)
+  const label = on ? 'Turn sound off' : 'Turn sound on'
   return (
-    <button type="button" className="sound" aria-pressed={on} onClick={() => setOn(sound.toggle())}>
+    <button type="button" className="sound" aria-pressed={on} aria-label={label} title={label} onClick={() => setOn(sound.toggle())}>
       <span className="sound__bars" aria-hidden="true">
         <i />
         <i />
         <i />
+        <i />
       </span>
-      Sound {on ? 'on' : 'off'}
     </button>
   )
 }
@@ -152,11 +153,9 @@ export default function App() {
 
       <header className="topbar">
         <Nav active={active} />
-        <div className="topbar__row">
-          <Checker active={active} />
-          <SoundToggle />
-        </div>
+        <Checker active={active} />
       </header>
+      <SoundToggle />
 
       <main>
         <section id="home" className="screen hero" data-section>

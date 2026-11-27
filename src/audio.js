@@ -1,11 +1,14 @@
-// Sound is off until the visitor turns it on, and it is all synthesized here.
-// There are no audio files. The pour is filtered noise whose pitch climbs as
-// the glass fills, the way a real pour does. The cork is a short thump.
+// Sound is off until the visitor turns it on. The cork pop is a recording in
+// public/sounds. The pour is synthesized here: filtered noise whose pitch
+// climbs as the glass fills, the way a real pour does.
+
+const CORK_POP_URL = '/sounds/cork-pop.mp3'
 
 class Sound {
   constructor() {
     this.enabled = false
     this.context = null
+    this.popBuffer = null
   }
 
   toggle() {
@@ -58,6 +61,13 @@ class Sound {
     source.connect(this.pourFilter).connect(highpass).connect(flutterGain).connect(this.pourGain).connect(this.master)
     source.start()
     flutter.start()
+
+    // Fetch the cork recording once, the first time sound is switched on.
+    fetch(CORK_POP_URL)
+      .then((response) => response.arrayBuffer())
+      .then((data) => context.decodeAudioData(data))
+      .then((decoded) => (this.popBuffer = decoded))
+      .catch(() => {})
   }
 
   // amount: 0 to 1, how much is pouring. fill: 0 to 1, how full the glass is.
@@ -69,31 +79,13 @@ class Sound {
   }
 
   pop() {
-    if (!this.enabled) return
-    const context = this.context
-    const now = context.currentTime
-
-    const thump = context.createOscillator()
-    thump.frequency.setValueAtTime(420, now)
-    thump.frequency.exponentialRampToValueAtTime(90, now + 0.11)
-    const thumpGain = context.createGain()
-    thumpGain.gain.setValueAtTime(0.6, now)
-    thumpGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22)
-    thump.connect(thumpGain).connect(this.master)
-    thump.start(now)
-    thump.stop(now + 0.25)
-
-    const click = context.createBufferSource()
-    click.buffer = this.noise
-    const clickFilter = context.createBiquadFilter()
-    clickFilter.type = 'bandpass'
-    clickFilter.frequency.value = 1800
-    const clickGain = context.createGain()
-    clickGain.gain.setValueAtTime(0.5, now)
-    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05)
-    click.connect(clickFilter).connect(clickGain).connect(this.master)
-    click.start(now)
-    click.stop(now + 0.06)
+    if (!this.enabled || !this.popBuffer) return
+    const source = this.context.createBufferSource()
+    source.buffer = this.popBuffer
+    const gain = this.context.createGain()
+    gain.gain.value = 0.9
+    source.connect(gain).connect(this.master)
+    source.start()
   }
 }
 
