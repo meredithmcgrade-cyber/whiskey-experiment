@@ -1,11 +1,12 @@
 import { Suspense, useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, Lightformer, useGLTF } from '@react-three/drei'
+import { Environment, Lightformer, useGLTF, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 import * as timeline from '../theatre/index.js'
 import { makeCorkMaterial, makeGlassMaterial, makeLiquidMaterial, makeStreamMaterial } from './materials.js'
 
 const MODEL_URL = '/models/whiskey.glb'
+const CORK_TEXTURES = ['/textures/cork-color.jpg', '/textures/cork-normal.jpg']
 
 // Measurements taken from the Blender bottle, relative to its base.
 const BOTTLE_PIVOT = 1.5 // the height it leans around
@@ -34,6 +35,7 @@ function useTimelineValues(object) {
 // Splits the exported file into the pieces the scene animates separately.
 function useModel() {
   const { scene } = useGLTF(MODEL_URL)
+  const [corkColor, corkNormal] = useTexture(CORK_TEXTURES)
   return useMemo(() => {
     const root = scene.clone(true)
     const find = (name) => root.getObjectByName(name) || root.getObjectByName(name.replace(/ /g, '_'))
@@ -45,7 +47,7 @@ function useModel() {
 
     const glassMaterial = makeGlassMaterial({ hollow: true })
     const iceMaterial = makeGlassMaterial({ tint: '#dcecf5', opacity: 0.1, roughness: 0.25, shine: 0.7, edge: 0.4 })
-    const corkMaterial = makeCorkMaterial()
+    const corkMaterial = makeCorkMaterial(corkColor, corkNormal)
     const glassLiquidMaterial = makeLiquidMaterial()
 
     const paint = (object, material, order = 0) =>
@@ -74,7 +76,7 @@ function useModel() {
     glassLiquidMesh.geometry.computeBoundingBox()
 
     return { bottle, cork, corkHome: cork.position.clone(), corkScale: cork.scale.clone(), glass, glassLiquid, glassLiquidMesh, glassLiquidMaterial, ice }
-  }, [scene])
+  }, [scene, corkColor, corkNormal])
 }
 
 const corner = new THREE.Vector3()
@@ -327,3 +329,4 @@ export default function Scene() {
 }
 
 useGLTF.preload(MODEL_URL)
+useTexture.preload(CORK_TEXTURES)

@@ -24,6 +24,7 @@ Then open the address it prints, usually http://localhost:5173.
 | Liquid, glass and cork looks | `src/scene/materials.js` |
 | The animation timeline | `src/theatre/state.json` |
 | The Blender export | `public/models/whiskey.glb` |
+| Baked cork texture | `public/textures/` |
 
 ## Editing the animation
 
@@ -52,4 +53,4 @@ The models come from `whiskey.1_web.blend`. To update them, select Bottle, Cork,
 Two things are done in code instead of Blender:
 
 - **The whiskey in the bottle** is a shape generated from the bottle's inside measurements (`BOTTLE_INTERIOR` in `Scene.jsx`) so it can run into the neck when the bottle tips. If the bottle's shape changes, those numbers need to change too.
-- **Materials** are all set in `materials.js`. Blender materials are ignored.
+- **Materials** are all set in `materials.js`. Blender materials are ignored, except the cork. Its procedural Blender material is baked to two images in `public/textures/` (color and surface bumps). If the cork's look or shape changes in Blender, it needs to be baked again.

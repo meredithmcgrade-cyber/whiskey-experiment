@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import Scene from './scene/Scene.jsx'
@@ -40,8 +40,33 @@ function useSections() {
 }
 
 function Nav({ active }) {
+  const nav = useRef(null)
+  const [pill, setPill] = useState({ x: 0, width: 0, visible: false, ready: false })
+
+  // The amber highlight is one element that slides to whichever link is
+  // active. It is measured from the link itself so it always fits the label.
+  useLayoutEffect(() => {
+    const measure = () => {
+      const link = nav.current?.querySelector('.is-active')
+      setPill((prev) =>
+        link
+          ? { x: link.offsetLeft, width: link.offsetWidth, visible: true, ready: prev.visible }
+          : { ...prev, visible: false }
+      )
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    document.fonts?.ready.then(measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [active])
+
   return (
-    <nav className="nav" aria-label="Days of the week">
+    <nav className="nav" aria-label="Days of the week" ref={nav}>
+      <span
+        className={`nav__pill ${pill.visible ? 'is-visible' : ''} ${pill.ready ? 'is-ready' : ''}`}
+        style={{ transform: `translateX(${pill.x}px)`, width: pill.width }}
+        aria-hidden="true"
+      />
       <a href="#home" className={active === 'home' ? 'is-active' : ''}>
         Home
       </a>

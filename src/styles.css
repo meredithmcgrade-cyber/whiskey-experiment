@@ -106,20 +106,46 @@ main {
 }
 
 .nav {
+  position: relative;
   display: flex;
   gap: 0.15rem;
   padding: 0.3rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 8px;
   background: rgba(10, 7, 5, 0.55);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
 
+/* The sliding highlight behind the active link. Its corners are a little
+   tighter than the bar's so the two curves sit evenly inside each other. */
+.nav__pill {
+  position: absolute;
+  top: 0.3rem;
+  bottom: 0.3rem;
+  left: 0;
+  border-radius: 4px;
+  background: var(--amber);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav__pill.is-visible {
+  opacity: 1;
+}
+
+.nav__pill.is-ready {
+  transition:
+    transform 0.55s cubic-bezier(0.3, 1.25, 0.4, 1),
+    width 0.55s cubic-bezier(0.3, 1.25, 0.4, 1),
+    opacity 0.3s var(--ease);
+}
+
 .nav a {
   position: relative;
+  z-index: 1;
   padding: 0.55rem 0.85rem;
-  border-radius: 999px;
+  border-radius: 4px;
   color: var(--muted);
   transition:
     color 0.3s var(--ease),
@@ -133,7 +159,7 @@ main {
 
 .nav a.is-active {
   color: var(--bg);
-  background: var(--amber);
+  background: transparent;
 }
 
 /* A small dot marks the real day of the week. */
@@ -162,7 +188,7 @@ main {
   display: flex;
   gap: 0.7rem;
   padding: 0.35rem 0.8rem;
-  border-radius: 999px;
+  border-radius: 8px;
   background: rgba(10, 7, 5, 0.55);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -481,6 +507,10 @@ main {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nav__pill.is-ready {
+    transition: opacity 0.3s;
+  }
+
   [data-reveal] > * {
     opacity: 1;
     transform: none;

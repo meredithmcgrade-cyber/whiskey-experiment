@@ -146,6 +146,20 @@ export function makeGlassMaterial({ tint = '#fff4e6', opacity = 0.04, roughness 
   return material
 }
 
-export function makeCorkMaterial() {
-  return new THREE.MeshStandardMaterial({ color: '#a9825a', roughness: 0.9, metalness: 0 })
+// The cork's color and surface bumps are baked out of the Blender material
+// into two images. Textures that pair with a glTF model are not flipped.
+export function makeCorkMaterial(colorMap, normalMap) {
+  for (const texture of [colorMap, normalMap]) {
+    texture.flipY = false
+    texture.anisotropy = 8
+    texture.needsUpdate = true
+  }
+  colorMap.colorSpace = THREE.SRGBColorSpace
+  return new THREE.MeshStandardMaterial({
+    map: colorMap,
+    normalMap,
+    normalScale: new THREE.Vector2(1.5, 1.5),
+    roughness: 0.75,
+    metalness: 0,
+  })
 }
