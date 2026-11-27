@@ -43,7 +43,7 @@ function useModel() {
     const glassLiquid = find('Glass Liquid')
     const ice = find('Ice')
 
-    const glassMaterial = makeGlassMaterial()
+    const glassMaterial = makeGlassMaterial({ hollow: true })
     const iceMaterial = makeGlassMaterial({ tint: '#dcecf5', opacity: 0.1, roughness: 0.25, shine: 0.7, edge: 0.4 })
     const corkMaterial = makeCorkMaterial()
     const glassLiquidMaterial = makeLiquidMaterial()

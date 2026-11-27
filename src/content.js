@@ -67,12 +67,6 @@ export const finale = {
 
 export const footer = {
   title: 'Bourbon Buddies',
-  contactLabel: 'Contact me if we run out',
-  phone: { label: '913 484 9941', href: 'tel:9134849941' },
-  email: {
-    label: 'meredith.mcgrade@signaltheory.com',
-    href: 'mailto:meredith.mcgrade@signaltheory.com',
-  },
   linksLabel: 'Useful links',
   links: [
     { label: "Mike's", href: 'https://mikeskc.com/' },

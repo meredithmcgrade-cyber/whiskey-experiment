@@ -142,15 +142,6 @@ export default function App() {
         <p className="footer__title">{footer.title}</p>
         <div className="footer__cols">
           <div>
-            <p className="eyebrow">{footer.contactLabel}</p>
-            <a className="link" href={footer.phone.href}>
-              {footer.phone.label}
-            </a>
-            <a className="link" href={footer.email.href}>
-              {footer.email.label}
-            </a>
-          </div>
-          <div>
             <p className="eyebrow">{footer.linksLabel}</p>
             {footer.links.map((l) => (
               <a key={l.href} className="link link--out" href={l.href} target="_blank" rel="noreferrer">
