@@ -12,49 +12,49 @@ export const days = [
     id: 'monday',
     name: 'Monday',
     short: 'Mon',
-    answer: "Why would you even fucking ask me that? How dare you? Of course, it’s Wednesday.",
+    answer: "Monday? Fuck Monday. Monday is a goddamn rumor started by people who hate joy. Check your shit again, asshole. It’s Wednesday.",
   },
   {
     id: 'tuesday',
     name: 'Tuesday',
     short: 'Tue',
     answer:
-      "Tuesdays are when clients take your kickass work and ask you to make it ‘pop.’ Thank sweet Satan it’s Wednesday, and the only thing we’re popping is the cork.",
+      "Some jackass just asked you to make the logo bigger. Again. Breathe, you beautiful bastard. It’s fucking Wednesday and that cork is getting restless as hell.",
   },
   {
     id: 'wednesday',
     name: 'Wednesday',
     short: 'Wed',
     answer:
-      "Seriously. It’s fucking Wednesday. And, as we all know, mid-week calls for Don Draper-level day drinking.",
+      "Holy shit, it’s actually Wednesday. Do you know how fucking rare that is? Every goddamn day, that’s how rare. Tip that bitch over and pour.",
   },
   {
     id: 'thursday',
     name: 'Thursday',
     short: 'Thu',
     answer:
-      "Yep, obviously, it’s fucking Wednesday, you glorious bastard. The stars have aligned, the whiskey gods are smiling, and all your bourbon friends are back in the chat.",
+      "Thursday is just Wednesday with a hangover and a shitty attitude. Stand up straight, you magnificent son of a bitch. It’s Wednesday as fuck.",
   },
   {
     id: 'friday',
     name: 'Friday',
     short: 'Fri',
     answer:
-      "Absolutely it’s Wednesday— Congratulations, you fuck. Now, celebrate making it this far without killing anyone.",
+      "Everyone else is screaming TGIF like a bunch of fucking tourists. We’ve been at this all goddamn week. Take a victory lap, dipshit. It’s Wednesday.",
   },
   {
     id: 'saturday',
     name: 'Saturday',
     short: 'Sat',
     answer:
-      "You bet your sweet ass it’s Wednesday. Saturday is for amateurs who need permission to drink. We’re professionals here.",
+      "Saturday drinkers are hobbyists. Dabblers. Brunch people. Get that weak-ass shit away from this bottle. It’s Wednesday and we’re fucking professionals.",
   },
   {
     id: 'sunday',
     name: 'Sunday',
     short: 'Sun',
     answer:
-      "Yes. It’s still fucking Wednesday. And, the fact you had to ask again is, frankly, offensive.",
+      "Sunday scaries? Never fucking heard of them. You can’t dread Monday when it’s always goddamn Wednesday. Now quit asking, you needy bastard.",
   },
 ]
 
