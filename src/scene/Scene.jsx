@@ -1,11 +1,11 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, Lightformer, PerformanceMonitor, useGLTF, useTexture } from '@react-three/drei'
+import { Environment, Lightformer, useGLTF, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, Noise, ToneMapping, Vignette } from '@react-three/postprocessing'
 import { BlendFunction, ToneMappingMode } from 'postprocessing'
 import * as THREE from 'three'
 import { rigs, SEQUENCE_LENGTH } from '../theatre/index.js'
-import { detectQuality, SETTINGS, stepDown } from '../quality.js'
+import { detectQuality, GOVERNOR, isForced, SETTINGS, stepDown } from '../quality.js'
 import { sound } from '../audio.js'
 import {
   makeBackdropMaterial,
@@ -535,6 +535,30 @@ function Effects({ settings }) {
   )
 }
 
+// Watches the real frame rate and asks for a lower tier only when it is
+// properly bad for a while. See GOVERNOR in quality.js for the thresholds.
+function QualityGovernor({ quality, onDecline }) {
+  const state = useRef({ elapsed: 0, frames: 0, time: 0, strikes: 0 })
+  useEffect(() => {
+    state.current = { elapsed: 0, frames: 0, time: 0, strikes: 0 }
+  }, [quality])
+  useFrame((_, delta) => {
+    // A long gap means the tab was hidden or the computer hiccuped. Skip it.
+    if (delta > 0.5 || document.visibilityState !== 'visible') return
+    const s = state.current
+    s.elapsed += delta
+    if (s.elapsed < GOVERNOR.warmUp) return
+    s.frames += 1
+    s.time += delta
+    if (s.time < GOVERNOR.window) return
+    s.strikes = s.frames / s.time < GOVERNOR.minimumFps ? s.strikes + 1 : 0
+    s.frames = 0
+    s.time = 0
+    if (s.strikes >= GOVERNOR.strikes) onDecline()
+  })
+  return null
+}
+
 export default function Scene() {
   const [quality, setQuality] = useState(detectQuality)
   const settings = SETTINGS[quality]
@@ -546,8 +570,7 @@ export default function Scene() {
       gl={{ antialias: !settings.effects, alpha: false, powerPreference: 'high-performance' }}
     >
       <color attach="background" args={['#0a0705']} />
-      {/* If the frame rate stays poor, drop to the next tier down. */}
-      <PerformanceMonitor onDecline={() => setQuality(stepDown)} flipflops={2} />
+      {!isForced() && quality !== 'low' && <QualityGovernor quality={quality} onDecline={() => setQuality(stepDown)} />}
       <Backdrop />
       <Lighting />
       <Suspense fallback={null}>

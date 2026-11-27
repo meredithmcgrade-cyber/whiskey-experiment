@@ -30,13 +30,13 @@ Then open the address it prints, usually http://localhost:5173.
 
 ## Quality tiers
 
-The site checks the visitor's graphics hardware and picks one of three levels. It also steps down a level by itself if the frame rate stays poor.
+The site checks the visitor's graphics hardware and picks one of three levels. It steps down a level only if the frame rate stays below 20 frames a second for several seconds. The thresholds are in `GOVERNOR` in `src/quality.js`.
 
 - **High**: real glass refraction with color fringing, bloom, film grain and a vignette.
 - **Medium**: real glass refraction and the same effects at a lower resolution.
 - **Low**: lightweight glass and no effects.
 
-Add `?quality=low`, `?quality=medium` or `?quality=high` to the address to force one while testing.
+Add `?quality=low`, `?quality=medium` or `?quality=high` to the address to force one while testing. A forced level never changes.
 
 ## Editing the animation
 
