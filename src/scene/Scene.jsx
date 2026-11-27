@@ -268,6 +268,7 @@ function Whiskey({ settings }) {
       lastScroll: -1,
       intro: 0,
       lastLift: 0,
+      lastLanding: 0,
       extent: [0, 0],
       slosh: new THREE.Vector2(),
       sloshVelocity: new THREE.Vector2(),
@@ -413,7 +414,8 @@ function Whiskey({ settings }) {
       scratch.curve.v2.copy(scratch.end)
       updateStream(streamGeometry, scratch.curve, tail, head, 0.06 * fit * b.scale, time)
     }
-    sound.setPour(pouring ? Math.min(1, (head - tail) * 2) : 0, l.glassFill)
+    if (landing > 0 && scratch.lastLanding === 0) sound.plop()
+    scratch.lastLanding = landing
 
     // Where it lands: rings spreading across the surface and a few beads
     // jumping up out of it.

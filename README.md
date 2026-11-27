@@ -22,7 +22,7 @@ Then open the address it prints, usually http://localhost:5173.
 | Colors, type and spacing | `src/styles.css` |
 | The 3D scene | `src/scene/Scene.jsx` |
 | Quality tiers | `src/quality.js` |
-| Sound | `src/audio.js` |
+| Sound | `src/audio.js` and `public/sounds/` |
 | Liquid, glass and cork looks | `src/scene/materials.js` |
 | The animation timeline | `src/theatre/state.json` |
 | The Blender export | `public/models/whiskey.glb` |
@@ -67,5 +67,6 @@ A few things are done in code instead of Blender:
 - **The whiskey in the bottle** is a shape generated from the bottle's inside measurements (`BOTTLE_INTERIOR` in `Scene.jsx`) so it can run into the neck when the bottle tips. If the bottle's shape changes, those numbers need to change too.
 - **The headline** is the raised lettering on the bottle, an object named `Label` parented to the bottle in Blender. It was built from the "Is It Wednesday_.svg" curves: extruded slightly and wrapped 130 degrees around the body. The HTML headline stays in the page for screen readers, hidden from view.
 - **Lighting** recreates the Blender file's four area lights and green ambient (see `Lighting` in `Scene.jsx`). If the lights move in Blender, they need to be moved here too.
-- **The pour, splash and cork pop** are generated in code, with no baked simulations. The pouring sound is synthesized too. The cork sound is a recording at `public/sounds/cork-pop.mp3`. Replace that file to change it.
+- **The pour, splash and cork pop** are generated in code, with no baked simulations.
+- **Sound** is two recordings in `public/sounds/`: `cork-pop.mp3` plays as the cork leaves the bottle, and `pour-plop.mp3` plays as the pour first lands in the glass. Replace either file to change it.
 - **Materials** are all set in `materials.js`. Blender materials are ignored, except the cork. Its procedural Blender material is baked to two images in `public/textures/` (color and surface bumps). If the cork's look or shape changes in Blender, it needs to be baked again.
