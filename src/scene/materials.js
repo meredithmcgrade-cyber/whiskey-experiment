@@ -73,6 +73,14 @@ export function makeLiquidMaterial() {
         float liquidRim = pow(1.0 - saturate(dot(normal, normalize(vViewPosition))), 3.0);
         totalEmissiveRadiance += uRimColor * liquidRim * 0.55;`
       )
+      .replace(
+        '#include <opaque_fragment>',
+        `// The flat top of the liquid faces straight up at the brightest lights.
+        // Left alone it mirrors them and goes white, so it is pulled back
+        // toward its own color.
+        if (!gl_FrontFacing) outgoingLight = mix(min(outgoingLight, vec3(1.0)), uSurfaceColor * 0.85, 0.6);
+        #include <opaque_fragment>`
+      )
   }
   return material
 }
@@ -117,14 +125,15 @@ export function makeGlassMaterial({ tint = '#fff4e6', opacity = 0.04, roughness 
   const uniforms = { uGlassTint: { value: new THREE.Color(tint) } }
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms)
-    // An inner wall faces the middle of the object. The inner floor faces up
-    // from just above the base.
+    // An inner wall faces the middle of the object. The inner floor and the
+    // underside are the flat faces near the base. Both go: lit from above, the
+    // underside otherwise shows through as a pale disc.
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', '#include <common>\nvarying float vGlassInner;')
       .replace(
         '#include <begin_vertex>',
         `#include <begin_vertex>
-        vGlassInner = ${hollow ? '(dot(normal.xz, position.xz) < -0.0001 || (normal.y > 0.7 && position.y < 0.35)) ? 1.0 : 0.0' : '0.0'};`
+        vGlassInner = ${hollow ? '(dot(normal.xz, position.xz) < -0.0001 || (abs(normal.y) > 0.7 && position.y < 0.35)) ? 1.0 : 0.0' : '0.0'};`
       )
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', '#include <common>\nuniform vec3 uGlassTint;\nvarying float vGlassInner;')
@@ -161,5 +170,82 @@ export function makeCorkMaterial(colorMap, normalMap) {
     normalScale: new THREE.Vector2(1.5, 1.5),
     roughness: 0.75,
     metalness: 0,
+  })
+}
+
+// Real glass, for devices that can afford it. Light bends through it, so the
+// whiskey, the cork and the headline behind the bottle all warp as it moves.
+// The inner wall is skipped entirely: the renderer treats glass as one thick
+// surface, and drawing both walls would bend everything twice.
+export function makeRefractiveGlassMaterial({ dispersion = 0 } = {}) {
+  const material = new THREE.MeshPhysicalMaterial({
+    color: '#ffffff',
+    metalness: 0,
+    roughness: 0.02,
+    transmission: 1,
+    thickness: 0.32,
+    ior: 1.45,
+    dispersion,
+    attenuationColor: '#efe2cf',
+    attenuationDistance: 5,
+    specularIntensity: 1,
+    envMapIntensity: 1.15,
+    depthWrite: false,
+  })
+  material.onBeforeCompile = (shader) => {
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying float vGlassInner;')
+      .replace(
+        '#include <begin_vertex>',
+        `#include <begin_vertex>
+        vGlassInner = (dot(normal.xz, position.xz) < -0.0001 || (abs(normal.y) > 0.7 && position.y < 0.35)) ? 1.0 : 0.0;`
+      )
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying float vGlassInner;')
+      .replace(
+        '#include <clipping_planes_fragment>',
+        `#include <clipping_planes_fragment>
+        if (vGlassInner > 0.5) discard;`
+      )
+  }
+  return material
+}
+
+// Faint glowing rings where the pour lands.
+export function makeRippleMaterial() {
+  return new THREE.MeshBasicMaterial({
+    color: '#ffb469',
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    side: THREE.DoubleSide,
+  })
+}
+
+// The backdrop: near black with a soft green glow behind the scene. It lives
+// in the 3D scene, not the page, so the glass has something to refract.
+export function makeBackdropMaterial() {
+  return new THREE.ShaderMaterial({
+    depthWrite: false,
+    uniforms: {
+      uResolution: { value: new THREE.Vector2(1, 1) },
+      uEdge: { value: new THREE.Color('#0a0705') },
+      uGlow: { value: new THREE.Color('#1b1e17') },
+    },
+    vertexShader: `void main() { gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `
+      uniform vec2 uResolution;
+      uniform vec3 uEdge;
+      uniform vec3 uGlow;
+      void main() {
+        vec2 uv = gl_FragCoord.xy / uResolution;
+        float d = length((uv - vec2(0.5, 0.55)) / vec2(0.62, 0.62));
+        float grain = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5;
+        vec3 color = mix(uGlow, uEdge, smoothstep(0.0, 1.0, d)) + grain * 0.004;
+        gl_FragColor = vec4(color, 1.0);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }`,
   })
 }

@@ -1,12 +1,26 @@
-import { Suspense, useEffect, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, Lightformer, useGLTF, useTexture } from '@react-three/drei'
+import { Environment, Lightformer, PerformanceMonitor, Text, useGLTF, useTexture } from '@react-three/drei'
+import { Bloom, EffectComposer, Noise, ToneMapping, Vignette } from '@react-three/postprocessing'
+import { BlendFunction, ToneMappingMode } from 'postprocessing'
 import * as THREE from 'three'
-import * as timeline from '../theatre/index.js'
-import { makeCorkMaterial, makeGlassMaterial, makeLiquidMaterial, makeStreamMaterial } from './materials.js'
+import { rigs, SEQUENCE_LENGTH } from '../theatre/index.js'
+import { detectQuality, SETTINGS, stepDown } from '../quality.js'
+import { sound } from '../audio.js'
+import { hero } from '../content.js'
+import {
+  makeBackdropMaterial,
+  makeCorkMaterial,
+  makeGlassMaterial,
+  makeLiquidMaterial,
+  makeRefractiveGlassMaterial,
+  makeRippleMaterial,
+  makeStreamMaterial,
+} from './materials.js'
 
 const MODEL_URL = '/models/whiskey.glb'
 const CORK_TEXTURES = ['/textures/cork-color.jpg', '/textures/cork-normal.jpg']
+const HEADLINE_FONT = '/fonts/ConsortRR-LightCondensed.woff'
 
 // Measurements taken from the Blender bottle, relative to its base.
 const BOTTLE_PIVOT = 1.5 // the height it leans around
@@ -19,21 +33,27 @@ const BOTTLE_INTERIOR = [
   [0.765, 1.72], [0.655, 1.82], [0.547, 1.92], [0.44, 2.02], [0.332, 2.12], [0.229, 2.22],
   [0.153, 2.32], [0.141, 2.42], [0.137, 2.9], [0, 2.9],
 ]
+const GLASS_INNER_RADIUS = 0.44
+const HEADLINE_DEPTH = -3 // how far behind the bottle the headline sits
+const PORTRAIT_BELOW = 0.8 // narrower than this and the phone timeline takes over
 
-const clamp = THREE.MathUtils.clamp
-const lerp = THREE.MathUtils.lerp
+const { clamp, lerp, smoothstep, degToRad } = THREE.MathUtils
 const UP = new THREE.Vector3(0, 1, 0)
+const easeOut = (t) => 1 - Math.pow(1 - t, 3)
 
 // Keeps the latest keyframed values for a timeline object in a ref so the
 // render loop can read them without re-rendering React.
 function useTimelineValues(object) {
   const ref = useRef(object.value)
-  useEffect(() => object.onValuesChange((values) => (ref.current = values)), [object])
+  useEffect(() => {
+    ref.current = object.value
+    return object.onValuesChange((values) => (ref.current = values))
+  }, [object])
   return ref
 }
 
 // Splits the exported file into the pieces the scene animates separately.
-function useModel() {
+function useModel(settings) {
   const { scene } = useGLTF(MODEL_URL)
   const [corkColor, corkNormal] = useTexture(CORK_TEXTURES)
   return useMemo(() => {
@@ -45,7 +65,9 @@ function useModel() {
     const glassLiquid = find('Glass Liquid')
     const ice = find('Ice')
 
-    const glassMaterial = makeGlassMaterial({ hollow: true })
+    const glassMaterial = settings.refraction
+      ? makeRefractiveGlassMaterial({ dispersion: settings.dispersion })
+      : makeGlassMaterial({ hollow: true })
     const iceMaterial = makeGlassMaterial({ tint: '#dcecf5', opacity: 0.1, roughness: 0.25, shine: 0.7, edge: 0.4 })
     const corkMaterial = makeCorkMaterial(corkColor, corkNormal)
     const glassLiquidMaterial = makeLiquidMaterial()
@@ -67,7 +89,7 @@ function useModel() {
 
     paint(bottle, glassMaterial, 3)
     paint(glass, glassMaterial, 3)
-    paint(ice, iceMaterial, 2)
+    paint(ice, iceMaterial, 4)
     paint(cork, corkMaterial)
     paint(glassLiquid, glassLiquidMaterial)
 
@@ -75,8 +97,20 @@ function useModel() {
     glassLiquid.traverse((child) => child.isMesh && (glassLiquidMesh = child))
     glassLiquidMesh.geometry.computeBoundingBox()
 
-    return { bottle, cork, corkHome: cork.position.clone(), corkScale: cork.scale.clone(), glass, glassLiquid, glassLiquidMesh, glassLiquidMaterial, ice }
-  }, [scene, corkColor, corkNormal])
+    return {
+      bottle,
+      cork,
+      corkHome: cork.position.clone(),
+      corkScale: cork.scale.clone(),
+      glass,
+      glassLiquid,
+      glassLiquidMesh,
+      glassLiquidMaterial,
+      ice,
+      iceHome: ice.position.clone(),
+      iceRotation: ice.rotation.clone(),
+    }
+  }, [scene, corkColor, corkNormal, settings])
 }
 
 const corner = new THREE.Vector3()
@@ -96,16 +130,91 @@ function extentAlong(mesh, direction, out) {
   return out
 }
 
-function Whiskey() {
-  const model = useModel()
+// ---------- The pour ----------
+
+const STREAM_RINGS = 44
+const STREAM_SIDES = 10
+
+function makeStreamGeometry() {
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array((STREAM_RINGS + 1) * STREAM_SIDES * 3), 3))
+  const index = []
+  for (let i = 0; i < STREAM_RINGS; i++) {
+    for (let j = 0; j < STREAM_SIDES; j++) {
+      const a = i * STREAM_SIDES + j
+      const b = i * STREAM_SIDES + ((j + 1) % STREAM_SIDES)
+      const c = a + STREAM_SIDES
+      const d = b + STREAM_SIDES
+      index.push(a, c, b, b, c, d)
+    }
+  }
+  geometry.setIndex(index)
+  return geometry
+}
+
+const streamPoint = new THREE.Vector3()
+const streamTangent = new THREE.Vector3()
+const streamSide = new THREE.Vector3()
+const streamOther = new THREE.Vector3()
+
+// Rebuilds the pour between its tail and its head. It thins as it falls,
+// carries a travelling ripple, sways a little, and breaks into beads when the
+// bottle stops giving.
+function updateStream(geometry, curve, tail, head, radius, time) {
+  const positions = geometry.attributes.position.array
+  const ending = smoothstep(tail, 0, 0.25)
+  for (let i = 0; i <= STREAM_RINGS; i++) {
+    const f = i / STREAM_RINGS
+    const t = lerp(tail, head, f)
+    curve.getPoint(t, streamPoint)
+    curve.getTangent(t, streamTangent)
+    streamSide.set(-streamTangent.y, streamTangent.x, 0)
+    if (streamSide.lengthSq() < 1e-6) streamSide.set(1, 0, 0)
+    streamSide.normalize()
+    streamOther.crossVectors(streamTangent, streamSide).normalize()
+
+    const sway = Math.sin(t * 8 - time * 6) * radius * 0.35 * t
+    streamPoint.addScaledVector(streamSide, sway).addScaledVector(streamOther, Math.cos(t * 6.5 - time * 5) * radius * 0.25 * t)
+
+    let r = radius * lerp(1, 0.6, t) * (1 + 0.16 * Math.sin(t * 24 - time * 12))
+    r *= lerp(1, 0.35 + 0.65 * Math.abs(Math.sin(t * 26 - time * 10)), ending)
+    // Close the travelling end while it is still in the air, and the top once
+    // the bottle has let go.
+    if (head < 0.999) r *= 1 - smoothstep(f, 0.82, 1)
+    if (tail > 0.001) r *= smoothstep(f, 0, 0.18)
+
+    for (let j = 0; j < STREAM_SIDES; j++) {
+      const angle = (j / STREAM_SIDES) * Math.PI * 2
+      const k = (i * STREAM_SIDES + j) * 3
+      positions[k] = streamPoint.x + (streamSide.x * Math.cos(angle) + streamOther.x * Math.sin(angle)) * r
+      positions[k + 1] = streamPoint.y + (streamSide.y * Math.cos(angle) + streamOther.y * Math.sin(angle)) * r
+      positions[k + 2] = streamPoint.z + (streamSide.z * Math.cos(angle) + streamOther.z * Math.sin(angle)) * r
+    }
+  }
+  geometry.attributes.position.needsUpdate = true
+  geometry.computeVertexNormals()
+}
+
+const DROPLETS = 7
+const dropletMatrix = new THREE.Matrix4()
+const dropletPosition = new THREE.Vector3()
+const dropletScale = new THREE.Vector3()
+const noRotation = new THREE.Quaternion()
+
+// ---------- The scene ----------
+
+function Whiskey({ settings }) {
+  const model = useModel(settings)
   const aspect = useThree((state) => state.viewport.aspect)
   const camera = useThree((state) => state.camera)
+  const portrait = aspect < PORTRAIT_BELOW
+  const rig = portrait ? rigs.phone : rigs.desktop
 
-  const bottleValues = useTimelineValues(timeline.bottle)
-  const corkValues = useTimelineValues(timeline.cork)
-  const glassValues = useTimelineValues(timeline.glass)
-  const liquidValues = useTimelineValues(timeline.liquid)
-  const cameraValues = useTimelineValues(timeline.camera)
+  const bottleValues = useTimelineValues(rig.bottle)
+  const corkValues = useTimelineValues(rig.cork)
+  const glassValues = useTimelineValues(rig.glass)
+  const liquidValues = useTimelineValues(rig.liquid)
+  const cameraValues = useTimelineValues(rig.camera)
 
   const world = useRef()
   const bottleRig = useRef()
@@ -115,9 +224,13 @@ function Whiskey() {
   const bottleLiquid = useRef()
   const glassRig = useRef()
   const stream = useRef()
+  const ripples = useRef([])
+  const droplets = useRef()
 
   const bottleLiquidMaterial = useMemo(() => makeLiquidMaterial(), [])
   const streamMaterial = useMemo(() => makeStreamMaterial(), [])
+  const rippleMaterials = useMemo(() => [makeRippleMaterial(), makeRippleMaterial()], [])
+  const streamGeometry = useMemo(() => makeStreamGeometry(), [])
   const bottleLiquidGeometry = useMemo(() => {
     const points = BOTTLE_INTERIOR.map(([r, y]) => new THREE.Vector2(r, y))
     const geometry = new THREE.LatheGeometry(points, 56)
@@ -125,26 +238,43 @@ function Whiskey() {
     return geometry
   }, [])
 
-  // Pointer position, for a slight parallax on the whole scene.
-  const pointer = useRef({ x: 0, y: 0 })
+  // Pointer position and speed. Position gives the scene a slight parallax
+  // and leans the bottle toward the cursor. Speed stirs the whiskey.
+  const pointer = useRef({ x: 0, y: 0, vx: 0, vy: 0, lastX: 0, lastY: 0, seen: false })
   useEffect(() => {
     const onMove = (e) => {
-      pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1
-      pointer.current.y = (e.clientY / window.innerHeight) * 2 - 1
+      const p = pointer.current
+      const x = (e.clientX / window.innerWidth) * 2 - 1
+      const y = (e.clientY / window.innerHeight) * 2 - 1
+      if (p.seen) {
+        p.vx += x - p.lastX
+        p.vy += y - p.lastY
+      }
+      p.lastX = p.x = x
+      p.lastY = p.y = y
+      p.seen = true
     }
     window.addEventListener('pointermove', onMove, { passive: true })
     return () => window.removeEventListener('pointermove', onMove)
   }, [])
 
+  // Lets the page fade its own pieces in once the bottle is ready.
+  useEffect(() => {
+    document.documentElement.classList.add('is-loaded')
+  }, [])
+
   const scratch = useMemo(
     () => ({
       lastScroll: -1,
+      intro: 0,
+      lastLift: 0,
       extent: [0, 0],
       slosh: new THREE.Vector2(),
       sloshVelocity: new THREE.Vector2(),
       liquidCenter: new THREE.Vector3(),
       lastCenter: null,
       normal: new THREE.Vector3(0, 1, 0),
+      glassNormal: new THREE.Vector3(0, 1, 0),
       mouth: new THREE.Vector3(),
       pivot: new THREE.Vector3(),
       axis: new THREE.Vector3(),
@@ -155,69 +285,85 @@ function Whiskey() {
     []
   )
 
-  useFrame((_, rawDelta) => {
+  useFrame((state, rawDelta) => {
     const delta = Math.min(rawDelta, 1 / 20)
+    const time = state.clock.elapsedTime
 
     // Scroll drives the timeline. One screen of scroll is one unit. Only
     // touching it when the scroll moves leaves the editor's playhead free.
     const scrollY = window.scrollY
     if (scrollY !== scratch.lastScroll) {
       scratch.lastScroll = scrollY
-      timeline.sheet.sequence.position = clamp(scrollY / window.innerHeight, 0, timeline.SEQUENCE_LENGTH)
+      const position = clamp(scrollY / window.innerHeight, 0, SEQUENCE_LENGTH)
+      rigs.desktop.sheet.sequence.position = position
+      rigs.phone.sheet.sequence.position = position
     }
 
     const b = bottleValues.current
     const g = glassValues.current
     const l = liquidValues.current
     const c = cameraValues.current
+    const p = pointer.current
 
-    // Narrow screens shrink the whole scene so it stays in frame.
-    const fit = clamp(aspect / 1.6, 0.55, 1)
-    world.current.scale.setScalar(fit)
-    world.current.rotation.y = lerp(world.current.rotation.y, pointer.current.x * 0.07, 0.06)
-    world.current.rotation.x = lerp(world.current.rotation.x, pointer.current.y * 0.04, 0.06)
-
-    camera.position.set(0, c.y, c.z)
-
-    // On tall, narrow screens the side to side travel is pulled in toward the
-    // middle. The glass shifts by the same amount so the pour still lines up.
-    const spread = lerp(0.25, 1, clamp((aspect - 0.5) / 0.8, 0, 1))
+    // The phone timeline is composed for a narrow screen already. In between
+    // sizes, the wide timeline is shrunk and pulled toward the middle.
+    const fit = portrait ? 1 : clamp(aspect / 1.6, 0.6, 1)
+    const spread = portrait ? 1 : lerp(0.45, 1, clamp((aspect - PORTRAIT_BELOW) / 0.6, 0, 1))
     const bottleX = b.x * spread
     const shift = b.x - bottleX
 
+    // Entrance: everything rises into frame once, when the model arrives.
+    scratch.intro = Math.min(1, scratch.intro + delta / 1.7)
+    const rise = (1 - easeOut(scratch.intro)) * -7
+
+    world.current.scale.setScalar(fit)
+    world.current.position.y = rise
+    world.current.rotation.y = lerp(world.current.rotation.y, p.x * 0.07, 0.06)
+    world.current.rotation.x = lerp(world.current.rotation.x, p.y * 0.04, 0.06)
+
+    camera.position.set(0, c.y, c.z)
+
     bottleRig.current.position.set(bottleX, b.y, 0)
     bottleRig.current.scale.setScalar(b.scale)
+    // A gentle lean toward the cursor, on top of whatever the timeline asks.
+    bottleRig.current.rotation.z = lerp(bottleRig.current.rotation.z, -p.x * 0.07, 0.05)
+    bottleRig.current.rotation.x = lerp(bottleRig.current.rotation.x, p.y * 0.05, 0.05)
     spin.current.rotation.y = b.spin * Math.PI * 2
-    lean.current.rotation.z = -THREE.MathUtils.degToRad(b.lean)
+    lean.current.rotation.z = -degToRad(b.lean)
 
     glassRig.current.position.set(g.x - shift, g.y, 0)
     glassRig.current.scale.setScalar(g.scale)
 
-    // Cork: lifts out, drifts off and shrinks away.
+    // Cork: it leaves like a thrown object. Up fast, slowing, arcing off to
+    // the side and tumbling as it falls away.
     const lift = corkValues.current.lift
     const { cork, corkHome, corkScale } = model
     cork.visible = lift < 0.995
-    cork.position.set(corkHome.x + lift * lift * 0.9, corkHome.y + lift * 1.7, corkHome.z)
-    cork.rotation.z = -lift * 1.4
-    cork.scale.copy(corkScale).multiplyScalar(1 - THREE.MathUtils.smoothstep(lift, 0.55, 1))
+    cork.position.set(corkHome.x + lift * 1.9, corkHome.y + lift * 6 - lift * lift * 8, corkHome.z + lift * 0.6)
+    cork.rotation.set(lift * 4.5, 0, -lift * 7)
+    cork.scale.copy(corkScale).multiplyScalar(1 - smoothstep(lift, 0.8, 1))
+    if (lift > 0.2 && scratch.lastLift <= 0.2) sound.pop()
+    scratch.lastLift = lift
 
     world.current.updateWorldMatrix(true, true)
 
     // Slosh: the liquid surface lags behind the bottle's movement like a
-    // weight on a spring, then settles.
+    // weight on a spring, then settles. Quick cursor moves stir it too.
     const mesh = bottleLiquid.current
     scratch.liquidCenter.set(0, BOTTLE_PIVOT, 0).applyMatrix4(mesh.matrixWorld)
     if (scratch.lastCenter) {
       const vx = (scratch.liquidCenter.x - scratch.lastCenter.x) / delta
       const vz = (scratch.liquidCenter.z - scratch.lastCenter.z) / delta
-      const targetX = clamp(vx * 0.05, -0.35, 0.35)
-      const targetZ = clamp(vz * 0.05, -0.35, 0.35)
+      const targetX = clamp(vx * 0.05 + p.vx * 2.2, -0.4, 0.4)
+      const targetZ = clamp(vz * 0.05 + p.vy * 2.2, -0.4, 0.4)
       scratch.sloshVelocity.x += ((targetX - scratch.slosh.x) * 70 - scratch.sloshVelocity.x * 5) * delta
       scratch.sloshVelocity.y += ((targetZ - scratch.slosh.y) * 70 - scratch.sloshVelocity.y * 5) * delta
       scratch.slosh.addScaledVector(scratch.sloshVelocity, delta)
     } else {
       scratch.lastCenter = new THREE.Vector3()
     }
+    p.vx *= 0.8
+    p.vy *= 0.8
     scratch.lastCenter.copy(scratch.liquidCenter)
     scratch.normal.set(scratch.slosh.x, 1, scratch.slosh.y).normalize()
 
@@ -227,18 +373,32 @@ function Whiskey() {
     u.uPlaneNormal.value.copy(scratch.normal)
     u.uPlaneLevel.value = lerp(low, high, l.bottleFill)
 
-    // Glass fill.
-    u = model.glassLiquidMaterial.userData.uniforms
-    ;[low, high] = extentAlong(model.glassLiquidMesh, UP, scratch.extent)
-    u.uPlaneLevel.value = lerp(low, high, l.glassFill * 1.002)
-    model.glassLiquid.visible = l.glassFill > 0.001
-
-    // The pour: a thin curved tube from the mouth of the bottle to the
-    // surface of the drink, drawn only between its tail and its head.
     const head = l.streamHead
     const tail = l.streamTail
     const pouring = head - tail > 0.01
+    const landing = pouring && head > 0.98 ? 1 - smoothstep(tail, 0.6, 1) : 0
+
+    // Glass fill. While the pour is landing the surface rocks a little.
+    scratch.glassNormal.set(Math.sin(time * 9) * 0.035 * landing, 1, Math.cos(time * 7.3) * 0.035 * landing).normalize()
+    u = model.glassLiquidMaterial.userData.uniforms
+    ;[low, high] = extentAlong(model.glassLiquidMesh, scratch.glassNormal, scratch.extent)
+    u.uPlaneNormal.value.copy(scratch.glassNormal)
+    u.uPlaneLevel.value = lerp(low, high, l.glassFill * 1.002)
+    model.glassLiquid.visible = l.glassFill > 0.001
+
+    // The ice floats up with the drink, bobbing and turning as it goes.
+    const { ice, iceHome, iceRotation } = model
+    const afloat = smoothstep(l.glassFill, 0.25, 1)
+    ice.position.y = iceHome.y + afloat * 0.1 + Math.sin(time * 2.6) * 0.012 * afloat * (0.4 + landing)
+    ice.rotation.set(
+      iceRotation.x + Math.sin(time * 1.9) * 0.07 * afloat,
+      iceRotation.y + afloat * 0.9,
+      iceRotation.z + Math.cos(time * 1.6) * 0.06 * afloat
+    )
+
+    // The pour itself.
     stream.current.visible = pouring
+    const glassSize = g.scale * fit
     if (pouring) {
       mouth.current.getWorldPosition(scratch.mouth)
       scratch.pivot.set(0, BOTTLE_PIVOT, 0).applyMatrix4(mesh.matrixWorld)
@@ -251,13 +411,35 @@ function Whiskey() {
       scratch.curve.v0.copy(scratch.mouth)
       scratch.curve.v1.copy(scratch.control)
       scratch.curve.v2.copy(scratch.end)
+      updateStream(streamGeometry, scratch.curve, tail, head, 0.06 * fit * b.scale, time)
+    }
+    sound.setPour(pouring ? Math.min(1, (head - tail) * 2) : 0, l.glassFill)
 
-      const points = []
-      const steps = 18
-      for (let i = 0; i <= steps; i++) points.push(scratch.curve.getPoint(lerp(tail, head, i / steps)))
-      const radius = 0.05 * fit * b.scale
-      stream.current.geometry.dispose()
-      stream.current.geometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 28, radius, 10, false)
+    // Where it lands: rings spreading across the surface and a few beads
+    // jumping up out of it.
+    ripples.current.forEach((ring, i) => {
+      const phase = (time * 0.9 + i * 0.5) % 1
+      ring.visible = landing > 0.01
+      ring.position.copy(scratch.end)
+      ring.position.y += 0.004
+      ring.scale.setScalar(GLASS_INNER_RADIUS * glassSize * lerp(0.2, 0.92, phase))
+      rippleMaterials[i].opacity = (1 - phase) * 0.55 * landing
+    })
+    droplets.current.visible = landing > 0.01
+    if (landing > 0.01) {
+      for (let i = 0; i < DROPLETS; i++) {
+        const life = (time * 1.7 + i / DROPLETS) % 1
+        const angle = i * 2.4 + Math.floor(time * 1.7 + i / DROPLETS) * 1.3
+        const out = GLASS_INNER_RADIUS * glassSize * 0.7 * life
+        dropletPosition.set(
+          scratch.end.x + Math.cos(angle) * out,
+          scratch.end.y + 4 * life * (1 - life) * 0.22 * glassSize,
+          scratch.end.z + Math.sin(angle) * out
+        )
+        dropletScale.setScalar(0.028 * glassSize * (1 - life) * landing)
+        droplets.current.setMatrixAt(i, dropletMatrix.compose(dropletPosition, noRotation, dropletScale))
+      }
+      droplets.current.instanceMatrix.needsUpdate = true
     }
   })
 
@@ -284,46 +466,143 @@ function Whiskey() {
         </group>
       </group>
 
-      {/* Lives outside the scaled group because it is built from world positions. */}
-      <mesh ref={stream} material={streamMaterial} visible={false} frustumCulled={false}>
-        <bufferGeometry />
-      </mesh>
+      {/* These live outside the scaled group because they are built from world positions. */}
+      <mesh ref={stream} geometry={streamGeometry} material={streamMaterial} visible={false} frustumCulled={false} />
+      {rippleMaterials.map((material, i) => (
+        <mesh key={i} ref={(el) => (ripples.current[i] = el)} material={material} rotation-x={-Math.PI / 2} visible={false} renderOrder={5}>
+          <ringGeometry args={[0.82, 1, 48]} />
+        </mesh>
+      ))}
+      <instancedMesh ref={droplets} args={[null, null, DROPLETS]} material={streamMaterial} visible={false} frustumCulled={false}>
+        <sphereGeometry args={[1, 10, 8]} />
+      </instancedMesh>
     </>
   )
 }
 
-// Studio lighting made of glowing panels. Glass and polished metal are mostly
-// reflections, so these panels are what you actually see in the highlights.
+// The headline is real 3D type sitting behind the bottle, so the glass passes
+// in front of the letters and bends them. It scrolls away with the page. The
+// HTML headline stays in the page for screen readers and is only hidden once
+// this one has drawn.
+function Headline() {
+  const text = useRef()
+  const width = useRef(0)
+  const camera = useThree((state) => state.camera)
+  const aspect = useThree((state) => state.viewport.aspect)
+  const intro = useRef(0)
+
+  useFrame((_, delta) => {
+    if (!width.current) return
+    const distance = camera.position.z - HEADLINE_DEPTH
+    const viewHeight = 2 * Math.tan(degToRad(camera.fov / 2)) * distance
+    const scroll = window.scrollY / window.innerHeight
+    const target = viewHeight * aspect * (aspect < PORTRAIT_BELOW ? 0.86 : 0.6)
+    intro.current = Math.min(1, intro.current + delta / 1.4)
+    text.current.scale.setScalar(target / width.current)
+    text.current.position.y = scroll * viewHeight + camera.position.y
+    text.current.visible = scroll < 1.4
+    text.current.fillOpacity = easeOut(intro.current)
+  })
+
+  return (
+    <Text
+      ref={text}
+      font={HEADLINE_FONT}
+      characters={hero.title}
+      fontSize={1}
+      letterSpacing={-0.02}
+      anchorX="center"
+      anchorY="middle"
+      position={[0, 0, HEADLINE_DEPTH]}
+      visible={false}
+      onSync={(mesh) => {
+        const box = mesh.geometry.boundingBox
+        width.current = box ? box.max.x - box.min.x : 0
+        if (width.current) document.documentElement.classList.add('has-3d-headline')
+      }}
+    >
+      {hero.title}
+      <meshBasicMaterial color="#dbd8d7" toneMapped={false} />
+    </Text>
+  )
+}
+
+function Backdrop() {
+  const material = useMemo(() => makeBackdropMaterial(), [])
+  const size = useThree((state) => state.size)
+  const dpr = useThree((state) => state.viewport.dpr)
+  useEffect(() => {
+    material.uniforms.uResolution.value.set(size.width * dpr, size.height * dpr)
+  }, [material, size, dpr])
+  return (
+    <mesh material={material} position={[0, 0, -14]} renderOrder={-10}>
+      <planeGeometry args={[120, 80]} />
+    </mesh>
+  )
+}
+
+// The lighting is the Blender file's own setup: its four area lights, placed
+// and sized as they are there and turned to face the camera the same way,
+// plus that file's dim green ambient. Two thin strips are added at the sides
+// because they are what draw the long highlights down the glass and whiskey.
 function Lighting() {
   return (
     <>
-      <ambientLight intensity={0.25} />
-      <directionalLight position={[4, 6, 5]} intensity={1.6} />
+      <ambientLight intensity={0.2} color="#c9d6cb" />
+      <directionalLight position={[-4.7, 7, 6.4]} intensity={1.7} />
       <pointLight position={[-5, -1, 3]} intensity={40} color="#ff8a2a" />
       <Environment resolution={256} frames={1}>
-        <color attach="background" args={['#050302']} />
-        <Lightformer form="rect" intensity={6} position={[0, 6, 2]} rotation-x={Math.PI / 2} scale={[9, 5, 1]} />
-        <Lightformer form="rect" intensity={9} position={[-6, 1.5, 2]} rotation-y={Math.PI / 2} scale={[1.2, 9, 1]} />
-        <Lightformer form="rect" intensity={7} position={[6, 0.5, 3]} rotation-y={-Math.PI / 2} scale={[0.8, 8, 1]} />
-        <Lightformer form="rect" intensity={3} color="#ff9a3c" position={[3, -3, -6]} scale={[10, 3, 1]} />
-        <Lightformer form="circle" intensity={12} position={[2.5, 3, 7]} rotation-y={Math.PI} scale={1.6} />
-        <Lightformer form="rect" intensity={1.1} color="#ffb060" position={[-3, -5, 4]} rotation-x={-Math.PI / 2} scale={[8, 4, 1]} />
+        <color attach="background" args={['#070a07']} />
+        {/* Area.004: the rectangular key, front left and above */}
+        <Lightformer form="rect" intensity={9} position={[-4.7, 7, 6.4]} target={[0, 0, 0]} scale={[2, 4.8, 1]} />
+        {/* Area.002: a round light high on the right, behind */}
+        <Lightformer form="circle" intensity={5} position={[10, 4, -5.4]} target={[0, 0, 0]} scale={6} />
+        {/* Area.001: the large warm disk overhead and behind */}
+        <Lightformer form="circle" intensity={3} color="#fffdc5" position={[-0.5, 4.7, -8.3]} target={[0, 0, 0]} scale={10} />
+        {/* Area.003: the huge, faint one far behind */}
+        <Lightformer form="circle" intensity={0.6} position={[1.1, 8.1, -23.8]} target={[0, 0, 0]} scale={28} />
+        <Lightformer form="rect" intensity={9} position={[-6, 1.5, 2]} rotation-y={Math.PI / 2} scale={[0.5, 9, 1]} />
+        <Lightformer form="rect" intensity={7} position={[6, 0.5, 3]} rotation-y={-Math.PI / 2} scale={[0.4, 8, 1]} />
+        <Lightformer form="rect" intensity={2} color="#ff9a3c" position={[3, -3, -6]} scale={[10, 3, 1]} />
       </Environment>
     </>
   )
 }
 
+// Bloom on the brightest highlights, a little film grain and darker corners.
+function Effects({ settings }) {
+  return (
+    <EffectComposer multisampling={settings.samples} disableNormalPass>
+      <Bloom mipmapBlur intensity={0.5} luminanceThreshold={1.1} luminanceSmoothing={0.3} radius={0.72} />
+      <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+      <Noise blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.22} />
+      <Vignette offset={0.28} darkness={0.5} />
+    </EffectComposer>
+  )
+}
+
 export default function Scene() {
+  const [quality, setQuality] = useState(detectQuality)
+  const settings = SETTINGS[quality]
+
   return (
     <Canvas
-      dpr={[1, 2]}
-      camera={{ fov: 30, near: 0.1, far: 60, position: [0, 0, 14] }}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+      dpr={settings.dpr}
+      camera={{ fov: 30, near: 0.1, far: 80, position: [0, 0, 14] }}
+      gl={{ antialias: !settings.effects, alpha: false, powerPreference: 'high-performance' }}
     >
+      <color attach="background" args={['#0a0705']} />
+      {/* If the frame rate stays poor, drop to the next tier down. */}
+      <PerformanceMonitor onDecline={() => setQuality(stepDown)} flipflops={2} />
+      <Backdrop />
       <Lighting />
       <Suspense fallback={null}>
-        <Whiskey />
+        <Headline />
       </Suspense>
+      <Suspense fallback={null}>
+        <Whiskey settings={settings} />
+      </Suspense>
+      {settings.effects && <Effects settings={settings} />}
     </Canvas>
   )
 }

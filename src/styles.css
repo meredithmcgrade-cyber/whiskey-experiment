@@ -190,7 +190,78 @@ main {
   display: none;
 }
 
-/* ---------- Checker readout ---------- */
+/* ---------- Checker readout and sound toggle ---------- */
+
+.topbar__row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.4rem;
+}
+
+.sound {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.8rem;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(10, 7, 5, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.62rem;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition:
+    color 0.3s var(--ease),
+    background-color 0.3s var(--ease);
+}
+
+.sound:hover {
+  color: var(--ink);
+  background: rgba(219, 216, 215, 0.1);
+}
+
+.sound[aria-pressed='true'] {
+  color: var(--ink);
+}
+
+.sound__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 0.7em;
+}
+
+.sound__bars i {
+  width: 2px;
+  height: 30%;
+  background: currentColor;
+  transition: height 0.3s var(--ease);
+}
+
+.sound[aria-pressed='true'] .sound__bars i {
+  animation: bars 0.9s ease-in-out infinite alternate;
+}
+
+.sound[aria-pressed='true'] .sound__bars i:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.sound[aria-pressed='true'] .sound__bars i:nth-child(3) {
+  animation-delay: -0.6s;
+}
+
+@keyframes bars {
+  from {
+    height: 25%;
+  }
+  to {
+    height: 100%;
+  }
+}
 
 .checker {
   display: flex;
@@ -225,6 +296,26 @@ main {
     opacity: 0;
     transform: translateY(0.5em);
   }
+}
+
+/* ---------- Entrance ---------- */
+
+/* The page chrome waits for the bottle, then fades in with it. */
+.topbar,
+.hero__hint {
+  opacity: 0;
+  transition: opacity 1.2s var(--ease) 0.5s;
+}
+
+.is-loaded .topbar,
+.is-loaded .hero__hint {
+  opacity: 1;
+}
+
+/* Once the 3D headline has drawn, the HTML one steps aside. It stays in the
+   page for screen readers and as the fallback if the 3D one never loads. */
+.has-3d-headline .hero__title {
+  opacity: 0;
 }
 
 /* ---------- Hero ---------- */
@@ -357,6 +448,30 @@ main {
   transition-delay: 0.16s;
 }
 
+/* Lines marked "words" rise in a word at a time instead of as a block. */
+[data-reveal] > .words,
+[data-reveal].in > .words {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.words__word {
+  display: inline-block;
+  white-space: pre;
+  opacity: 0;
+  transform: translateY(0.55em);
+  transition:
+    opacity 0.5s var(--ease),
+    transform 0.7s var(--ease);
+}
+
+[data-reveal].in .words__word {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.12s + var(--i) * var(--step, 28ms));
+}
+
 /* ---------- Finale ---------- */
 
 .finale__block {
@@ -373,7 +488,7 @@ main {
   letter-spacing: -0.015em;
 }
 
-.finale__question span {
+.finale__question .words__lead {
   color: var(--accent);
 }
 
@@ -488,6 +603,10 @@ main {
     display: none;
   }
 
+  .sound {
+    padding: 0.35rem 0.6rem;
+  }
+
   .nav__short {
     display: inline;
   }
@@ -516,6 +635,17 @@ main {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .words__word {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .sound[aria-pressed='true'] .sound__bars i {
+    animation: none;
+    height: 70%;
+  }
+
   .nav__pill.is-ready {
     transition: opacity 0.3s;
   }

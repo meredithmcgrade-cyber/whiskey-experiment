@@ -11,12 +11,12 @@
         "tracksByObject": {
           "Bottle": {
             "trackData": {
-              "t00000013jm": {
+              "t000000kv86": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Bottle:[\"x\"]",
                 "keyframes": [
                   {
-                    "id": "k0000012kym",
+                    "id": "k000001n6ki",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -29,7 +29,7 @@
                     "value": 0
                   },
                   {
-                    "id": "k000002w4fj",
+                    "id": "k000002n0fl",
                     "position": 1,
                     "connectedRight": true,
                     "handles": [
@@ -42,7 +42,7 @@
                     "value": 2.7
                   },
                   {
-                    "id": "k000003xhqb",
+                    "id": "k000003et6i",
                     "position": 2,
                     "connectedRight": true,
                     "handles": [
@@ -55,7 +55,7 @@
                     "value": -2.7
                   },
                   {
-                    "id": "k000004gm6r",
+                    "id": "k000004m768",
                     "position": 3,
                     "connectedRight": true,
                     "handles": [
@@ -68,7 +68,7 @@
                     "value": 2.7
                   },
                   {
-                    "id": "k000005uc7l",
+                    "id": "k0000052m7i",
                     "position": 4,
                     "connectedRight": true,
                     "handles": [
@@ -81,7 +81,7 @@
                     "value": -2.7
                   },
                   {
-                    "id": "k0000061ccy",
+                    "id": "k000006jrmm",
                     "position": 5,
                     "connectedRight": true,
                     "handles": [
@@ -94,7 +94,7 @@
                     "value": 2.7
                   },
                   {
-                    "id": "k000007z05s",
+                    "id": "k0000072h9n",
                     "position": 6,
                     "connectedRight": true,
                     "handles": [
@@ -107,7 +107,7 @@
                     "value": -2.7
                   },
                   {
-                    "id": "k000008a4pa",
+                    "id": "k000008q1np",
                     "position": 7,
                     "connectedRight": true,
                     "handles": [
@@ -120,7 +120,7 @@
                     "value": 2.7
                   },
                   {
-                    "id": "k000009e9ob",
+                    "id": "k000009qai2",
                     "position": 8.1,
                     "connectedRight": true,
                     "handles": [
@@ -133,7 +133,7 @@
                     "value": 0.9
                   },
                   {
-                    "id": "k00000a0ex5",
+                    "id": "k00000aatra",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -147,12 +147,12 @@
                   }
                 ]
               },
-              "t00000bddwl": {
+              "t00000bl3nl": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Bottle:[\"y\"]",
                 "keyframes": [
                   {
-                    "id": "k00000c3c8u",
+                    "id": "k00000ckitz",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -165,7 +165,7 @@
                     "value": -2.3
                   },
                   {
-                    "id": "k00000ddh7c",
+                    "id": "k00000dx3rf",
                     "position": 1,
                     "connectedRight": true,
                     "handles": [
@@ -178,7 +178,46 @@
                     "value": -1.9
                   },
                   {
-                    "id": "k00000en30v",
+                    "id": "k00000eqeqi",
+                    "position": 3.6,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -1.9
+                  },
+                  {
+                    "id": "k00000fipuu",
+                    "position": 4,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -1.55
+                  },
+                  {
+                    "id": "k00000gt0er",
+                    "position": 4.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -1.9
+                  },
+                  {
+                    "id": "k00000hdk1n",
                     "position": 7.4,
                     "connectedRight": true,
                     "handles": [
@@ -191,7 +230,7 @@
                     "value": -1.9
                   },
                   {
-                    "id": "k00000fv119",
+                    "id": "k00000i7efe",
                     "position": 8.15,
                     "connectedRight": true,
                     "handles": [
@@ -204,7 +243,7 @@
                     "value": -1.2
                   },
                   {
-                    "id": "k00000g5osc",
+                    "id": "k00000jg0xw",
                     "position": 8.65,
                     "connectedRight": true,
                     "handles": [
@@ -217,7 +256,7 @@
                     "value": -0.55
                   },
                   {
-                    "id": "k00000h7xpl",
+                    "id": "k00000k4swk",
                     "position": 9.8,
                     "connectedRight": true,
                     "handles": [
@@ -230,7 +269,7 @@
                     "value": -0.55
                   },
                   {
-                    "id": "k00000ierwo",
+                    "id": "k00000ly79m",
                     "position": 10.05,
                     "connectedRight": true,
                     "handles": [
@@ -243,7 +282,7 @@
                     "value": -0.8
                   },
                   {
-                    "id": "k00000jcszq",
+                    "id": "k00000m1t0i",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -257,12 +296,12 @@
                   }
                 ]
               },
-              "t00000kijoo": {
+              "t00000na74t": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Bottle:[\"scale\"]",
                 "keyframes": [
                   {
-                    "id": "k00000lrw23",
+                    "id": "k00000obb43",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -275,7 +314,7 @@
                     "value": 1.5
                   },
                   {
-                    "id": "k00000m3t9h",
+                    "id": "k00000p6t3y",
                     "position": 1,
                     "connectedRight": true,
                     "handles": [
@@ -288,7 +327,7 @@
                     "value": 1.25
                   },
                   {
-                    "id": "k00000ncbbi",
+                    "id": "k00000q1ska",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -302,12 +341,12 @@
                   }
                 ]
               },
-              "t00000o393g": {
+              "t00000r4w2k": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Bottle:[\"spin\"]",
                 "keyframes": [
                   {
-                    "id": "k00000pi4pc",
+                    "id": "k00000s7l7s",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -320,7 +359,33 @@
                     "value": 0
                   },
                   {
-                    "id": "k00000qpw01",
+                    "id": "k00000tgtue",
+                    "position": 4.6,
+                    "connectedRight": true,
+                    "handles": [
+                      0.6666666666666666,
+                      0.6666666666666666,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 2.45
+                  },
+                  {
+                    "id": "k00000uojd2",
+                    "position": 5.4,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.3333333333333333,
+                      0.3333333333333333
+                    ],
+                    "type": "bezier",
+                    "value": 3.9
+                  },
+                  {
+                    "id": "k00000vslqo",
                     "position": 7.5,
                     "connectedRight": true,
                     "handles": [
@@ -330,10 +395,10 @@
                       0.6
                     ],
                     "type": "bezier",
-                    "value": 4
+                    "value": 5
                   },
                   {
-                    "id": "k00000rhase",
+                    "id": "k00000wnwtz",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -343,16 +408,16 @@
                       0
                     ],
                     "type": "bezier",
-                    "value": 4
+                    "value": 5
                   }
                 ]
               },
-              "t00000sfbth": {
+              "t00000xu0wg": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Bottle:[\"lean\"]",
                 "keyframes": [
                   {
-                    "id": "k00000tnvgw",
+                    "id": "k00000ypkm8",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -365,8 +430,60 @@
                     "value": 10
                   },
                   {
-                    "id": "k00000uow0y",
-                    "position": 1,
+                    "id": "k00000zm9dz",
+                    "position": 0.8,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 27
+                  },
+                  {
+                    "id": "k000010xkxp",
+                    "position": 0.92,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 13
+                  },
+                  {
+                    "id": "k000011y2z5",
+                    "position": 1.04,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 25
+                  },
+                  {
+                    "id": "k000012fg43",
+                    "position": 1.16,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 17
+                  },
+                  {
+                    "id": "k000013s7f9",
+                    "position": 1.3,
                     "connectedRight": true,
                     "handles": [
                       0.5,
@@ -378,7 +495,124 @@
                     "value": 20
                   },
                   {
-                    "id": "k00000vgxm5",
+                    "id": "k0000142yvq",
+                    "position": 2.55,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k0000153d29",
+                    "position": 3,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 58
+                  },
+                  {
+                    "id": "k000016ojcl",
+                    "position": 3.45,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k000017hr0d",
+                    "position": 4,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k000018vd1b",
+                    "position": 4.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k000019latq",
+                    "position": 5.55,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k00001a22m7",
+                    "position": 6,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -24
+                  },
+                  {
+                    "id": "k00001bruti",
+                    "position": 6.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k00001crhtq",
+                    "position": 7,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 12
+                  },
+                  {
+                    "id": "k00001dmnws",
                     "position": 7.5,
                     "connectedRight": true,
                     "handles": [
@@ -391,7 +625,7 @@
                     "value": 20
                   },
                   {
-                    "id": "k00000w89b8",
+                    "id": "k00001eqntp",
                     "position": 8.15,
                     "connectedRight": true,
                     "handles": [
@@ -404,7 +638,7 @@
                     "value": 55
                   },
                   {
-                    "id": "k00000x9gfi",
+                    "id": "k00001fdm56",
                     "position": 8.65,
                     "connectedRight": true,
                     "handles": [
@@ -417,7 +651,7 @@
                     "value": 108
                   },
                   {
-                    "id": "k00000yjrt4",
+                    "id": "k00001gbww9",
                     "position": 9.75,
                     "connectedRight": true,
                     "handles": [
@@ -430,7 +664,7 @@
                     "value": 118
                   },
                   {
-                    "id": "k00000znq48",
+                    "id": "k00001hl4ub",
                     "position": 10.05,
                     "connectedRight": true,
                     "handles": [
@@ -443,7 +677,7 @@
                     "value": 62
                   },
                   {
-                    "id": "k000010iiba",
+                    "id": "k00001iw6be",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -459,21 +693,21 @@
               }
             },
             "trackIdByPropPath": {
-              "[\"x\"]": "t00000013jm",
-              "[\"y\"]": "t00000bddwl",
-              "[\"scale\"]": "t00000kijoo",
-              "[\"spin\"]": "t00000o393g",
-              "[\"lean\"]": "t00000sfbth"
+              "[\"x\"]": "t000000kv86",
+              "[\"y\"]": "t00000bl3nl",
+              "[\"scale\"]": "t00000na74t",
+              "[\"spin\"]": "t00000r4w2k",
+              "[\"lean\"]": "t00000xu0wg"
             }
           },
           "Cork": {
             "trackData": {
-              "t000011zrtz": {
+              "t00001jtijv": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Cork:[\"lift\"]",
                 "keyframes": [
                   {
-                    "id": "k000012xy63",
+                    "id": "k00001khue7",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -486,25 +720,90 @@
                     "value": 0
                   },
                   {
-                    "id": "k000013bge1",
-                    "position": 7.55,
+                    "id": "k00001lrmkv",
+                    "position": 1.75,
                     "connectedRight": true,
                     "handles": [
                       0.5,
                       1,
-                      0.2,
-                      0.6
+                      0.5,
+                      0
                     ],
                     "type": "bezier",
                     "value": 0
                   },
                   {
-                    "id": "k000014u54z",
-                    "position": 8.05,
+                    "id": "k00001mw6yz",
+                    "position": 1.98,
                     "connectedRight": true,
                     "handles": [
-                      0.4,
+                      0.5,
                       1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.07
+                  },
+                  {
+                    "id": "k00001nzxfj",
+                    "position": 2.14,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.025
+                  },
+                  {
+                    "id": "k00001o7xa1",
+                    "position": 2.3,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.08
+                  },
+                  {
+                    "id": "k00001pa9lj",
+                    "position": 2.6,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00001qissn",
+                    "position": 7.55,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.3333333333333333,
+                      0.3333333333333333
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00001rwu57",
+                    "position": 8.1,
+                    "connectedRight": true,
+                    "handles": [
+                      0.6666666666666666,
+                      0.6666666666666666,
                       0.5,
                       0
                     ],
@@ -512,7 +811,7 @@
                     "value": 1
                   },
                   {
-                    "id": "k000015p6rr",
+                    "id": "k00001suy7l",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -528,17 +827,17 @@
               }
             },
             "trackIdByPropPath": {
-              "[\"lift\"]": "t000011zrtz"
+              "[\"lift\"]": "t00001jtijv"
             }
           },
           "Glass": {
             "trackData": {
-              "t000016b1tc": {
+              "t00001tpq48": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Glass:[\"x\"]",
                 "keyframes": [
                   {
-                    "id": "k000017gtb7",
+                    "id": "k00001uva04",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -551,7 +850,7 @@
                     "value": 2.75
                   },
                   {
-                    "id": "k000018j3b5",
+                    "id": "k00001vhvv4",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -565,12 +864,12 @@
                   }
                 ]
               },
-              "t000019dhxz": {
+              "t00001wuq3a": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Glass:[\"y\"]",
                 "keyframes": [
                   {
-                    "id": "k00001auvp5",
+                    "id": "k00001x527f",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -583,7 +882,7 @@
                     "value": -12
                   },
                   {
-                    "id": "k00001bb85v",
+                    "id": "k00001yclx1",
                     "position": 7.5,
                     "connectedRight": true,
                     "handles": [
@@ -596,7 +895,7 @@
                     "value": -12
                   },
                   {
-                    "id": "k00001cjq6d",
+                    "id": "k00001zrf9o",
                     "position": 8.4,
                     "connectedRight": true,
                     "handles": [
@@ -609,7 +908,7 @@
                     "value": -2.75
                   },
                   {
-                    "id": "k00001duo8o",
+                    "id": "k0000209vit",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -623,12 +922,12 @@
                   }
                 ]
               },
-              "t00001ek4dm": {
+              "t000021ohm6": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Glass:[\"scale\"]",
                 "keyframes": [
                   {
-                    "id": "k00001fx5u1",
+                    "id": "k000022l11h",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -641,7 +940,7 @@
                     "value": 1.3
                   },
                   {
-                    "id": "k00001gwlgg",
+                    "id": "k000023yaqx",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -657,19 +956,19 @@
               }
             },
             "trackIdByPropPath": {
-              "[\"x\"]": "t000016b1tc",
-              "[\"y\"]": "t000019dhxz",
-              "[\"scale\"]": "t00001ek4dm"
+              "[\"x\"]": "t00001tpq48",
+              "[\"y\"]": "t00001wuq3a",
+              "[\"scale\"]": "t000021ohm6"
             }
           },
           "Liquid": {
             "trackData": {
-              "t00001hh7im": {
+              "t0000242nvm": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Liquid:[\"bottleFill\"]",
                 "keyframes": [
                   {
-                    "id": "k00001i4brf",
+                    "id": "k0000258siq",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -682,7 +981,7 @@
                     "value": 0.5
                   },
                   {
-                    "id": "k00001j1i6t",
+                    "id": "k0000261bhr",
                     "position": 8.62,
                     "connectedRight": true,
                     "handles": [
@@ -695,7 +994,7 @@
                     "value": 0.5
                   },
                   {
-                    "id": "k00001kaxzb",
+                    "id": "k000027o9p5",
                     "position": 9.78,
                     "connectedRight": true,
                     "handles": [
@@ -708,7 +1007,7 @@
                     "value": 0.16
                   },
                   {
-                    "id": "k00001lluvl",
+                    "id": "k000028dctx",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -722,12 +1021,12 @@
                   }
                 ]
               },
-              "t00001mbe66": {
+              "t000029m572": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Liquid:[\"glassFill\"]",
                 "keyframes": [
                   {
-                    "id": "k00001n0arg",
+                    "id": "k00002a2mgq",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -740,7 +1039,7 @@
                     "value": 0
                   },
                   {
-                    "id": "k00001o0q1p",
+                    "id": "k00002bsquf",
                     "position": 8.8,
                     "connectedRight": true,
                     "handles": [
@@ -753,7 +1052,7 @@
                     "value": 0
                   },
                   {
-                    "id": "k00001pskej",
+                    "id": "k00002cmjpp",
                     "position": 9.9,
                     "connectedRight": true,
                     "handles": [
@@ -766,7 +1065,7 @@
                     "value": 1
                   },
                   {
-                    "id": "k00001qkgln",
+                    "id": "k00002d2xbl",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -780,12 +1079,12 @@
                   }
                 ]
               },
-              "t00001ru0wk": {
+              "t00002ef7xg": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Liquid:[\"streamHead\"]",
                 "keyframes": [
                   {
-                    "id": "k00001s8jlg",
+                    "id": "k00002f5b1y",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -798,7 +1097,7 @@
                     "value": 0
                   },
                   {
-                    "id": "k00001te6ge",
+                    "id": "k00002g5w91",
                     "position": 8.62,
                     "connectedRight": true,
                     "handles": [
@@ -811,7 +1110,7 @@
                     "value": 0
                   },
                   {
-                    "id": "k00001ukkra",
+                    "id": "k00002hw6s6",
                     "position": 8.8,
                     "connectedRight": true,
                     "handles": [
@@ -824,7 +1123,7 @@
                     "value": 1
                   },
                   {
-                    "id": "k00001vdmve",
+                    "id": "k00002il4tz",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -838,12 +1137,12 @@
                   }
                 ]
               },
-              "t00001wnxlv": {
+              "t00002jvbd3": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Liquid:[\"streamTail\"]",
                 "keyframes": [
                   {
-                    "id": "k00001x25nx",
+                    "id": "k00002kh0n1",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -856,7 +1155,7 @@
                     "value": 0
                   },
                   {
-                    "id": "k00001y0ueh",
+                    "id": "k00002l3ab3",
                     "position": 9.76,
                     "connectedRight": true,
                     "handles": [
@@ -869,8 +1168,8 @@
                     "value": 0
                   },
                   {
-                    "id": "k00001zacm9",
-                    "position": 9.92,
+                    "id": "k00002mo5fe",
+                    "position": 9.95,
                     "connectedRight": true,
                     "handles": [
                       0.8,
@@ -882,7 +1181,7 @@
                     "value": 1
                   },
                   {
-                    "id": "k000020w3av",
+                    "id": "k00002n4ir3",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -898,20 +1197,20 @@
               }
             },
             "trackIdByPropPath": {
-              "[\"bottleFill\"]": "t00001hh7im",
-              "[\"glassFill\"]": "t00001mbe66",
-              "[\"streamHead\"]": "t00001ru0wk",
-              "[\"streamTail\"]": "t00001wnxlv"
+              "[\"bottleFill\"]": "t0000242nvm",
+              "[\"glassFill\"]": "t000029m572",
+              "[\"streamHead\"]": "t00002ef7xg",
+              "[\"streamTail\"]": "t00002jvbd3"
             }
           },
           "Camera": {
             "trackData": {
-              "t000021uc5l": {
+              "t00002o66ku": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Camera:[\"z\"]",
                 "keyframes": [
                   {
-                    "id": "k000022bukz",
+                    "id": "k00002pjud0",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -924,7 +1223,46 @@
                     "value": 14
                   },
                   {
-                    "id": "k000023adsu",
+                    "id": "k00002qejvz",
+                    "position": 6.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 14
+                  },
+                  {
+                    "id": "k00002r1zyz",
+                    "position": 7,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 11.2
+                  },
+                  {
+                    "id": "k00002s76hx",
+                    "position": 7.55,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 14
+                  },
+                  {
+                    "id": "k00002t1j35",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -938,12 +1276,12 @@
                   }
                 ]
               },
-              "t000024arru": {
+              "t00002upgog": {
                 "type": "BasicKeyframedTrack",
                 "__debugName": "Camera:[\"y\"]",
                 "keyframes": [
                   {
-                    "id": "k000025h74d",
+                    "id": "k00002vy4oy",
                     "position": 0,
                     "connectedRight": true,
                     "handles": [
@@ -956,7 +1294,7 @@
                     "value": 0
                   },
                   {
-                    "id": "k0000265jxd",
+                    "id": "k00002w5qpi",
                     "position": 10.5,
                     "connectedRight": true,
                     "handles": [
@@ -972,8 +1310,1351 @@
               }
             },
             "trackIdByPropPath": {
-              "[\"z\"]": "t000021uc5l",
-              "[\"y\"]": "t000024arru"
+              "[\"z\"]": "t00002o66ku",
+              "[\"y\"]": "t00002upgog"
+            }
+          }
+        }
+      }
+    },
+    "Scroll Phone": {
+      "staticOverrides": {
+        "byObject": {}
+      },
+      "sequence": {
+        "subUnitsPerUnit": 30,
+        "length": 10.5,
+        "type": "PositionalSequence",
+        "tracksByObject": {
+          "Bottle": {
+            "trackData": {
+              "t00002xx0tt": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Bottle:[\"x\"]",
+                "keyframes": [
+                  {
+                    "id": "k00002ytvzv",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00002zvymz",
+                    "position": 1,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.32
+                  },
+                  {
+                    "id": "k000030az8j",
+                    "position": 2,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -0.32
+                  },
+                  {
+                    "id": "k000031rwa2",
+                    "position": 3,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.32
+                  },
+                  {
+                    "id": "k00003270zc",
+                    "position": 4,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -0.32
+                  },
+                  {
+                    "id": "k000033959k",
+                    "position": 5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.32
+                  },
+                  {
+                    "id": "k000034y6jx",
+                    "position": 6,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -0.32
+                  },
+                  {
+                    "id": "k0000354b69",
+                    "position": 7,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.32
+                  },
+                  {
+                    "id": "k0000360348",
+                    "position": 8.1,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -0.37
+                  },
+                  {
+                    "id": "k0000373c92",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -0.37
+                  }
+                ]
+              },
+              "t00003879t3": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Bottle:[\"y\"]",
+                "keyframes": [
+                  {
+                    "id": "k000039raxe",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -0.9
+                  },
+                  {
+                    "id": "k00003ago8z",
+                    "position": 1,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.35
+                  },
+                  {
+                    "id": "k00003bpmth",
+                    "position": 3.6,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.35
+                  },
+                  {
+                    "id": "k00003cg451",
+                    "position": 4,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.6
+                  },
+                  {
+                    "id": "k00003drtik",
+                    "position": 4.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.35
+                  },
+                  {
+                    "id": "k00003erysv",
+                    "position": 7.4,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.35
+                  },
+                  {
+                    "id": "k00003fdyvp",
+                    "position": 8.15,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.7
+                  },
+                  {
+                    "id": "k00003g8owd",
+                    "position": 8.65,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  },
+                  {
+                    "id": "k00003hmkbv",
+                    "position": 9.8,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  },
+                  {
+                    "id": "k00003irp1l",
+                    "position": 10.05,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.85
+                  },
+                  {
+                    "id": "k00003jw6l6",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.85
+                  }
+                ]
+              },
+              "t00003k73g7": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Bottle:[\"scale\"]",
+                "keyframes": [
+                  {
+                    "id": "k00003lv908",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  },
+                  {
+                    "id": "k00003mbz6g",
+                    "position": 1,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.8
+                  },
+                  {
+                    "id": "k00003nvh07",
+                    "position": 7.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.8
+                  },
+                  {
+                    "id": "k00003o0lpz",
+                    "position": 8.15,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.7
+                  },
+                  {
+                    "id": "k00003p114s",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.7
+                  }
+                ]
+              },
+              "t00003q77om": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Bottle:[\"spin\"]",
+                "keyframes": [
+                  {
+                    "id": "k00003refbw",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.3333333333333333,
+                      0.3333333333333333
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00003s2c9c",
+                    "position": 4.6,
+                    "connectedRight": true,
+                    "handles": [
+                      0.6666666666666666,
+                      0.6666666666666666,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 2.45
+                  },
+                  {
+                    "id": "k00003t0nsu",
+                    "position": 5.4,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.3333333333333333,
+                      0.3333333333333333
+                    ],
+                    "type": "bezier",
+                    "value": 3.9
+                  },
+                  {
+                    "id": "k00003u2aah",
+                    "position": 7.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.6666666666666666,
+                      0.6666666666666666,
+                      0.2,
+                      0.6
+                    ],
+                    "type": "bezier",
+                    "value": 5
+                  },
+                  {
+                    "id": "k00003vcwde",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.4,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 5
+                  }
+                ]
+              },
+              "t00003w0p7t": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Bottle:[\"lean\"]",
+                "keyframes": [
+                  {
+                    "id": "k00003xxsyo",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 10
+                  },
+                  {
+                    "id": "k00003y8mfi",
+                    "position": 0.8,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 27
+                  },
+                  {
+                    "id": "k00003zs4pn",
+                    "position": 0.92,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 13
+                  },
+                  {
+                    "id": "k000040iqs4",
+                    "position": 1.04,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 25
+                  },
+                  {
+                    "id": "k000041nhl6",
+                    "position": 1.16,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 17
+                  },
+                  {
+                    "id": "k000042hjuz",
+                    "position": 1.3,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k000043fs5k",
+                    "position": 2.55,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k000044uwqn",
+                    "position": 3,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 58
+                  },
+                  {
+                    "id": "k000045cet4",
+                    "position": 3.45,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k000046r94g",
+                    "position": 4,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k0000474g9y",
+                    "position": 4.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k0000486353",
+                    "position": 5.55,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k000049b49x",
+                    "position": 6,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -24
+                  },
+                  {
+                    "id": "k00004avn36",
+                    "position": 6.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k00004bzewb",
+                    "position": 7,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 12
+                  },
+                  {
+                    "id": "k00004cohq4",
+                    "position": 7.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 20
+                  },
+                  {
+                    "id": "k00004dl3jo",
+                    "position": 8.15,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 55
+                  },
+                  {
+                    "id": "k00004e9dia",
+                    "position": 8.65,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 108
+                  },
+                  {
+                    "id": "k00004f6130",
+                    "position": 9.75,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 118
+                  },
+                  {
+                    "id": "k00004gydyi",
+                    "position": 10.05,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 62
+                  },
+                  {
+                    "id": "k00004hq4ah",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 62
+                  }
+                ]
+              }
+            },
+            "trackIdByPropPath": {
+              "[\"x\"]": "t00002xx0tt",
+              "[\"y\"]": "t00003879t3",
+              "[\"scale\"]": "t00003k73g7",
+              "[\"spin\"]": "t00003q77om",
+              "[\"lean\"]": "t00003w0p7t"
+            }
+          },
+          "Cork": {
+            "trackData": {
+              "t00004iifyy": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Cork:[\"lift\"]",
+                "keyframes": [
+                  {
+                    "id": "k00004jx072",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00004kv6r4",
+                    "position": 1.75,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00004l75l3",
+                    "position": 1.98,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.07
+                  },
+                  {
+                    "id": "k00004mwrk3",
+                    "position": 2.14,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.025
+                  },
+                  {
+                    "id": "k00004nf5x2",
+                    "position": 2.3,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.08
+                  },
+                  {
+                    "id": "k00004ojcjg",
+                    "position": 2.6,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00004pamn0",
+                    "position": 7.55,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.3333333333333333,
+                      0.3333333333333333
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00004qb5kn",
+                    "position": 8.1,
+                    "connectedRight": true,
+                    "handles": [
+                      0.6666666666666666,
+                      0.6666666666666666,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  },
+                  {
+                    "id": "k00004rm84e",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "trackIdByPropPath": {
+              "[\"lift\"]": "t00004iifyy"
+            }
+          },
+          "Glass": {
+            "trackData": {
+              "t00004s9j4u": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Glass:[\"x\"]",
+                "keyframes": [
+                  {
+                    "id": "k00004tj3ut",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.6
+                  },
+                  {
+                    "id": "k00004uffs6",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.6
+                  }
+                ]
+              },
+              "t00004v7zva": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Glass:[\"y\"]",
+                "keyframes": [
+                  {
+                    "id": "k00004w5qrb",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": -12
+                  },
+                  {
+                    "id": "k00004xedhv",
+                    "position": 7.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.2,
+                      0.6
+                    ],
+                    "type": "bezier",
+                    "value": -12
+                  },
+                  {
+                    "id": "k00004ygdag",
+                    "position": 8.4,
+                    "connectedRight": true,
+                    "handles": [
+                      0.4,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00004z6baw",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  }
+                ]
+              },
+              "t0000501mm6": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Glass:[\"scale\"]",
+                "keyframes": [
+                  {
+                    "id": "k000051kbqp",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.85
+                  },
+                  {
+                    "id": "k0000523ime",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.85
+                  }
+                ]
+              }
+            },
+            "trackIdByPropPath": {
+              "[\"x\"]": "t00004s9j4u",
+              "[\"y\"]": "t00004v7zva",
+              "[\"scale\"]": "t0000501mm6"
+            }
+          },
+          "Liquid": {
+            "trackData": {
+              "t000053yora": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Liquid:[\"bottleFill\"]",
+                "keyframes": [
+                  {
+                    "id": "k000054xamk",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.5
+                  },
+                  {
+                    "id": "k000055rl2a",
+                    "position": 8.62,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.3333333333333333,
+                      0.3333333333333333
+                    ],
+                    "type": "bezier",
+                    "value": 0.5
+                  },
+                  {
+                    "id": "k0000563u9b",
+                    "position": 9.78,
+                    "connectedRight": true,
+                    "handles": [
+                      0.6666666666666666,
+                      0.6666666666666666,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.16
+                  },
+                  {
+                    "id": "k000057nkos",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0.16
+                  }
+                ]
+              },
+              "t000058ipvz": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Liquid:[\"glassFill\"]",
+                "keyframes": [
+                  {
+                    "id": "k000059h0vf",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00005afvmi",
+                    "position": 8.8,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.3333333333333333,
+                      0.3333333333333333
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00005bs93r",
+                    "position": 9.9,
+                    "connectedRight": true,
+                    "handles": [
+                      0.6666666666666666,
+                      0.6666666666666666,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  },
+                  {
+                    "id": "k00005c0ml0",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  }
+                ]
+              },
+              "t00005d333y": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Liquid:[\"streamHead\"]",
+                "keyframes": [
+                  {
+                    "id": "k00005ep3om",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00005fnoiv",
+                    "position": 8.62,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.6,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00005gfzl4",
+                    "position": 8.8,
+                    "connectedRight": true,
+                    "handles": [
+                      0.8,
+                      0.4,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  },
+                  {
+                    "id": "k00005hethh",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  }
+                ]
+              },
+              "t00005if23y": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Liquid:[\"streamTail\"]",
+                "keyframes": [
+                  {
+                    "id": "k00005jmll8",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00005kqt3l",
+                    "position": 9.76,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.6,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00005lxtvm",
+                    "position": 9.95,
+                    "connectedRight": true,
+                    "handles": [
+                      0.8,
+                      0.4,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  },
+                  {
+                    "id": "k00005mwene",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "trackIdByPropPath": {
+              "[\"bottleFill\"]": "t000053yora",
+              "[\"glassFill\"]": "t000058ipvz",
+              "[\"streamHead\"]": "t00005d333y",
+              "[\"streamTail\"]": "t00005if23y"
+            }
+          },
+          "Camera": {
+            "trackData": {
+              "t00005ni1bg": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Camera:[\"z\"]",
+                "keyframes": [
+                  {
+                    "id": "k00005ovme1",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 14
+                  },
+                  {
+                    "id": "k00005pu8ht",
+                    "position": 6.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 14
+                  },
+                  {
+                    "id": "k00005qxims",
+                    "position": 7,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 12
+                  },
+                  {
+                    "id": "k00005ro48k",
+                    "position": 7.55,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 14
+                  },
+                  {
+                    "id": "k00005siszc",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 14
+                  }
+                ]
+              },
+              "t00005t6r9v": {
+                "type": "BasicKeyframedTrack",
+                "__debugName": "Camera:[\"y\"]",
+                "keyframes": [
+                  {
+                    "id": "k00005ub56c",
+                    "position": 0,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  },
+                  {
+                    "id": "k00005vv5f4",
+                    "position": 10.5,
+                    "connectedRight": true,
+                    "handles": [
+                      0.5,
+                      1,
+                      0.5,
+                      0
+                    ],
+                    "type": "bezier",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "trackIdByPropPath": {
+              "[\"z\"]": "t00005ni1bg",
+              "[\"y\"]": "t00005t6r9v"
             }
           }
         }
@@ -982,6 +2663,6 @@
   },
   "definitionVersion": "0.4.0",
   "revisionHistory": [
-    "r000027u1zy"
+    "r00005wkwjq"
   ]
 }

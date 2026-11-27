@@ -3,6 +3,7 @@ import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import Scene from './scene/Scene.jsx'
 import { days, finale, footer, hero, question } from './content.js'
+import { sound } from './audio.js'
 
 // JS counts days from Sunday. The site counts from Monday.
 const todayId = days[(new Date().getDay() + 6) % 7].id
@@ -87,6 +88,40 @@ function Nav({ active }) {
   )
 }
 
+// Splits a line into words that rise in one after another. Screen readers
+// get the whole sentence from the label and skip the pieces.
+function Words({ text, as: Tag = 'p', className = '', step = 28, lead }) {
+  const words = text.split(' ')
+  return (
+    <Tag className={`words ${className}`} aria-label={lead ? `${lead} ${text}` : text} style={{ '--step': `${step}ms` }}>
+      {lead && (
+        <span className="words__word words__lead" aria-hidden="true" style={{ '--i': 0 }}>
+          {lead}{' '}
+        </span>
+      )}
+      {words.map((word, i) => (
+        <span key={i} className="words__word" aria-hidden="true" style={{ '--i': i + (lead ? 1 : 0) }}>
+          {word}{' '}
+        </span>
+      ))}
+    </Tag>
+  )
+}
+
+function SoundToggle() {
+  const [on, setOn] = useState(false)
+  return (
+    <button type="button" className="sound" aria-pressed={on} onClick={() => setOn(sound.toggle())}>
+      <span className="sound__bars" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </span>
+      Sound {on ? 'on' : 'off'}
+    </button>
+  )
+}
+
 function Checker({ active }) {
   const day = days.find((d) => d.id === active)
   const pending = active === 'home'
@@ -117,7 +152,10 @@ export default function App() {
 
       <header className="topbar">
         <Nav active={active} />
-        <Checker active={active} />
+        <div className="topbar__row">
+          <Checker active={active} />
+          <SoundToggle />
+        </div>
       </header>
 
       <main>
@@ -143,22 +181,20 @@ export default function App() {
                 {d.id === todayId && <span className="eyebrow__today">Today</span>}
               </p>
               <p className="day__question">{question}</p>
-              <p className="day__answer">{d.answer}</p>
+              <Words className="day__answer" text={d.answer} />
             </div>
           </section>
         ))}
 
         <section id="still" className="finale" data-section>
           <div className="screen finale__block" data-reveal>
-            <h2 className="finale__question">
-              <span>{finale.lead}</span> {finale.question}
-            </h2>
+            <Words as="h2" className="finale__question" text={finale.question} lead={finale.lead} step={60} />
           </div>
           <div className="screen finale__block" data-reveal>
-            <p className="finale__answer">{finale.answer}</p>
+            <Words className="finale__answer" text={finale.answer} step={110} />
           </div>
           <div className="screen finale__block" data-reveal>
-            <p className="finale__body">{finale.body}</p>
+            <Words className="finale__body" text={finale.body} step={11} />
           </div>
         </section>
       </main>
